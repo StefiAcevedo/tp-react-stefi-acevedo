@@ -1,10 +1,7 @@
+import AppRouter from './router/Router';
 
 function App() {
-  return (
-    <div>
-      <h1>Películas App 🎬</h1>
-    </div>
-  );
+  return <AppRouter />;
 }
 
 export default App;
