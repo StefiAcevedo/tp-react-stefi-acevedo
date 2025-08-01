@@ -4,6 +4,7 @@ import Populares from '../pages/Populares';
 import Buscador from '../pages/Buscador';
 import Detalle from '../pages/Detalle';
 import NavBar from '../components/NavBar'; // navbar
+import UltimosLanzamientos from '../pages/UltimosLanzamientos';
 
 function AppRouter() {
   return (
@@ -14,6 +15,7 @@ function AppRouter() {
         <Route path="/populares" element={<Populares />} />
         <Route path="/buscador" element={<Buscador />} />
         <Route path="/detalle/:id" element={<Detalle />} />
+        <Route path="/ultimos-lanzamientos" element={<UltimosLanzamientos />} />
       </Routes>
     </BrowserRouter>
   );

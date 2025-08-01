@@ -1,4 +1,5 @@
 import React from "react";
+import './UltimosLanzamientos.scss'; // traigo los estilos del scss
 
 const UltimosLanzamientos = () => {
   return (
@@ -9,5 +10,5 @@ const UltimosLanzamientos = () => {
     </div>
   );
 };
-{/* prueba para funcionamiento de git */}
+
 export default UltimosLanzamientos;
