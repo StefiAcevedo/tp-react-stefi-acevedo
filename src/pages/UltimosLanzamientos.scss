@@ -1,7 +1,48 @@
 /* UltimosLanzamientos.scss primeros estilos de base*/
-h1 {
-    color: violet;
-    text-align: center;
-    margin-top: 40px;
+
+.ultimos-lanzamientos {
+  padding: 2rem;
+
+  .titulo {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
   }
-  
+
+  .contenedor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background-color: #1e293b; // azul oscuro
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background-color 0.3s ease;
+
+    img {
+      width: 100%;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+
+    &:hover {
+      background-color: #0ea5e9; // celeste
+      transform: scale(1.03);
+    }
+  }
+}
