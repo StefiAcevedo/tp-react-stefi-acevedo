@@ -7,6 +7,7 @@ function NavBar() {
         <li><Link to="/">Inicio</Link></li>
         <li><Link to="/populares">Populares</Link></li>
         <li><Link to="/buscador">Buscador</Link></li>
+        <li><Link to="/ultimos-lanzamientos">Últimos Lanzamientos</Link></li>
       </ul>
     </nav>
   );
