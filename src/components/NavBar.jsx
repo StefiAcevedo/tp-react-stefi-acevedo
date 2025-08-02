@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './NavBar.css';
+import '../styles/NavBar.css';
 import { NavLink } from 'react-router-dom';
 
 function NavBar() {
@@ -45,6 +45,11 @@ function NavBar() {
               Buscador
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/ultimos-lanzamientos" className="navbar-link" onClick={closeMenu}>
+              Últimos Lanzamientos
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
@@ -52,3 +57,4 @@ function NavBar() {
 }
 
 export default NavBar;
+
