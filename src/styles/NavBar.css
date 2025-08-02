@@ -1,11 +1,11 @@
 /* components/NavBar.css */
 
-nav {
+.navbar {
     padding: 1rem;
     background-color: #003366; /* azul oscuro */
   }
   
-  nav ul {
+  .navbar-list {
     display: flex;
     gap: 1rem;
     list-style: none;
@@ -13,7 +13,7 @@ nav {
     padding: 0;
   }
   
-  nav ul li a {
+  .navbar-link {
     color: white;
     text-decoration: none;
     font-weight: 500;
@@ -22,8 +22,16 @@ nav {
     border-radius: 5px;
   }
   
-  nav ul li a:hover {
+  /* Estilo hover */
+  .navbar-link:hover {
     background-color: #00bcd4; /* celeste */
     color: black;
+  }
+  
+  /* Estilo activo: el link de la ruta actual */
+  .navbar-link.active {
+    background-color: #007acc;
+    color: white;
+    font-weight: 700;
   }
   
