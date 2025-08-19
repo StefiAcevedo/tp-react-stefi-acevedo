@@ -1,15 +1,13 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import "./NavBar.css"; // chequear luego los estilos
 
-function NavBar() {
+export default function NavBar() {
   return (
-    <nav style={{ padding: '1rem', background: '#eee' }}>
-      <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none' }}>
-        <li><Link to="/">Inicio</Link></li>
-        <li><Link to="/populares">Populares</Link></li>
-        <li><Link to="/buscador">Buscador</Link></li>
-      </ul>
+    <nav className="nav">
+      <NavLink to="/" end>Home</NavLink>
+      <NavLink to="/buscador">Buscador</NavLink>
+      <NavLink to="/populares">Populares</NavLink>
+      <NavLink to="/ultimos-lanzamientos">Últimos Lanzamientos</NavLink>
     </nav>
   );
 }
-
-export default NavBar;

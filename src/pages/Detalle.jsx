@@ -2,31 +2,33 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./Detalle.scss";
 
-function Detalle() {
-  const { id } = useParams(); // capturamos el ID de la URL
+export default function Detalle() {
+  const { id } = useParams();
   const [personaje, setPersonaje] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log("[DEBUG] fetching personaje id=", id);
     const fetchPersonaje = async () => {
       try {
         const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
         if (!res.ok) throw new Error("No se pudo cargar el detalle");
         const data = await res.json();
+        console.log("[DEBUG] personaje data:", data);
         setPersonaje(data);
       } catch (err) {
+        console.error("[DEBUG] error:", err);
         setError("Error cargando el personaje.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchPersonaje();
   }, [id]);
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p style={{padding:'1rem'}}>Cargando...</p>;
+  if (error) return <p style={{padding:'1rem'}}>{error}</p>;
 
   return (
     <section className="detalle">
@@ -48,5 +50,3 @@ function Detalle() {
     </section>
   );
 }
-
-export default Detalle;

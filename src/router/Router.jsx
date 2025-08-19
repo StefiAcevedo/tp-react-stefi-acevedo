@@ -3,17 +3,21 @@ import Home from '../pages/Home';
 import Populares from '../pages/Populares';
 import Buscador from '../pages/Buscador';
 import Detalle from '../pages/Detalle';
-import NavBar from '../components/NavBar'; // navbar
+import NavBar from '../components/NavBar';
 
 function AppRouter() {
   return (
     <BrowserRouter>
       <NavBar />
-      <Routes> {/* Acá debo ir sumando las diferentes rutas: controlar el Mayus*/}
+      <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/populares" element={<Populares />} />
-        <Route path="/buscador" element={<Buscador />} />
+        <Route path="/buscador" element={<div style={{padding:'2rem'}}>BUSCADOR ROUTE INLINE ✅</div>} />
         <Route path="/detalle/:id" element={<Detalle />} />
+
+        {/* --- DEBUG ROUTES --- */}
+        <Route path="/__ping" element={<div style={{padding:'1rem'}}>PING OK</div>} />
+        <Route path="*" element={<div style={{padding:'1rem'}}>404: ruta no matcheada</div>} />
       </Routes>
     </BrowserRouter>
   );
