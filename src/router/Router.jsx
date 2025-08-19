@@ -12,7 +12,7 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/populares" element={<Populares />} />
-        <Route path="/buscador" element={<div style={{padding:'2rem'}}>BUSCADOR ROUTE INLINE ✅</div>} />
+        <Route path="/buscador" element={<Buscador />} />
         <Route path="/detalle/:id" element={<Detalle />} />
 
         {/* --- DEBUG ROUTES --- */}
