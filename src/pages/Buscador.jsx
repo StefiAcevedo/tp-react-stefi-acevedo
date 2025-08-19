@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Card from "./Card.jsx";
+import "./Buscador.scss";
 
 export default function Buscador() {
   const [query, setQuery] = useState("");
@@ -30,10 +32,10 @@ export default function Buscador() {
   };
 
   return (
-    <section style={{ padding: "1rem" }}>
+    <section className="buscador">
       <h1>Buscador</h1>
 
-      <form onSubmit={handleSubmit} role="search" style={{ display: "grid", gap: ".75rem", maxWidth: 600 }}>
+      <form onSubmit={handleSubmit} role="search">
         <label htmlFor="q">¿Qué querés buscar?</label>
         <input
           id="q"
@@ -46,16 +48,12 @@ export default function Buscador() {
         <button type="submit">Buscar</button>
       </form>
 
-      <div style={{ marginTop: "1rem" }}>
+      <div className="resultados">
         {loading && <p>Cargando...</p>}
         {error && !loading && <p>{error}</p>}
-        {!loading && !error && results.length > 0 && (
-          <ul>
-            {results.map((item) => (
-              <li key={item.id}>{item.name}</li>
-            ))}
-          </ul>
-        )}
+        {!loading && !error && results.length > 0 &&
+          results.map((item) => <Card key={item.id} personaje={item} />)
+        }
       </div>
     </section>
   );

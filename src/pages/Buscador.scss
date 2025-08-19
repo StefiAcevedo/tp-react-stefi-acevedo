@@ -1,0 +1,50 @@
+.buscador {
+    padding: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  
+    form {
+      display: grid;
+      gap: 0.75rem;
+    }
+  
+    label {
+      font-weight: 600;
+    }
+  
+    input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+  
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #4cafef;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+  
+      &:hover {
+        background: #1b82d2;
+      }
+    }
+  
+    .resultados {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+  }
+  
