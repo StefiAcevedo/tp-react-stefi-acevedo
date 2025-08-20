@@ -53,3 +53,62 @@
     }
   }
   
+  /* Skeletons de carga, mejora :) */
+  .skeletons {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    align-items: start;
+    min-height: 320px; /* evita salto de layout */
+  }
+  
+  .skel-card {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 220px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f3f3f3;
+    padding: 0.5rem;
+  }
+  
+  .skel-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #ececec 25%, #f5f5f5 37%, #ececec 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.2s infinite;
+  }
+  
+  .skel-line {
+    height: 12px;
+    margin-top: .5rem;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #ececec 25%, #f5f5f5 37%, #ececec 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Accesibilidad extra */
+  .buscador input:focus,
+  .buscador button:focus {
+    outline: 2px solid #6a5acd;
+    outline-offset: 2px;
+  }
+  
+  /* Mobile: un poco menos de padding */
+  @media (max-width: 480px) {
+    .buscador { padding: 1rem; }
+  }
+  
+  /* Respeto a reducción de motion */
+  @media (prefers-reduced-motion: reduce) {
+    .skel-img, .skel-line { animation: none; }
+  }
+  
