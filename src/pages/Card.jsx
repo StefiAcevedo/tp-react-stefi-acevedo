@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-// trae el SCSS desde components porque el archivo .scss lo puse en diferentes carpetas
 import "../components/Card.scss";
 
 export default function Card({ personaje }) {
@@ -12,6 +11,7 @@ export default function Card({ personaje }) {
       onClick={go}
       role="button"
       tabIndex={0}
+      aria-label={`Ver detalle de ${personaje.name}`}
       onKeyDown={(e) => e.key === "Enter" && go()}
     >
       <img src={personaje.image} alt={personaje.name} loading="lazy" />
