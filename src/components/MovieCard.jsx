@@ -10,9 +10,9 @@ export default function MovieCard({ movie }) {
     <article className="movie-card">
       {poster && <img src={poster} alt={movie.title} loading="lazy" />}
       <h3>{movie.title}</h3>
-      <button className="movie-card__btn" onClick={() => navigate(`/detalle/${movie.id}`)}>
+      <Link className="movie-card__btn" to={`/detalle/${movie.id}`}>
         Ver detalle
-      </button>
+      </Link>
     </article>
   );
 }
