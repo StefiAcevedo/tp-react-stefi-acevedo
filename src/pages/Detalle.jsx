@@ -6,34 +6,38 @@ export default function Detalle() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [personaje, setPersonaje] = useState(null);
-  const [episodios, setEpisodios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [episodes, setEpisodes] = useState([]); // es nuevo! 
 
   useEffect(() => {
-    console.log("[DEBUG] fetching personaje id=", id);
     const fetchPersonaje = async () => {
       try {
-        const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+        const res = await fetch(
+          `https://rickandmortyapi.com/api/character/${id}`
+        );
         if (!res.ok) throw new Error("No se pudo cargar el detalle");
         const data = await res.json();
-        console.log("[DEBUG] personaje data:", data);
         setPersonaje(data);
 
-        // trae hasta 6 episodios
-        const urls = (data.episode || []).slice(0, 6);
-        const eps = await Promise.all(
-          urls.map((u) => fetch(u).then((r) => r.json()))
-        );
-        setEpisodios(eps);
+        // después de traer el personaje, cargamos los episodios
+        if (data.episode?.length) {
+          // Tomamos sólo los primeros 8 episodios para no cargar de más
+          const firstEpisodes = data.episode.slice(0, 8);
 
+          const epResponses = await Promise.all(
+            firstEpisodes.map((url) => fetch(url).then((r) => r.json()))
+          );
+
+          setEpisodes(epResponses); // es nuevo! set de episodios.mejora!
+        }
       } catch (err) {
-        console.error("[DEBUG] error:", err);
         setError("Error cargando el personaje.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchPersonaje();
   }, [id]);
 
@@ -42,6 +46,10 @@ export default function Detalle() {
 
   return (
     <section className="detalle">
+      <button className="detalle__volver" onClick={() => navigate(-1)}> 
+        ← Volver
+      </button>
+
       {personaje && (
         <div className="detalle__wrap">
           <div className="detalle__media">
@@ -54,27 +62,20 @@ export default function Detalle() {
             <p><strong>Género:</strong> {personaje.gender}</p>
             <p><strong>Origen:</strong> {personaje.origin?.name}</p>
             <p><strong>Ubicación:</strong> {personaje.location?.name}</p>
-
-            {episodios.length > 0 && (
-              <div className="detalle__episodios">
-                <h2>Episodios</h2>
-                <ul>
-                  {episodios.map((ep) => (
-                    <li key={ep.id}>
-                      <strong>{ep.episode}</strong> — {ep.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <button
-              className="detalle__back"
-              onClick={() => navigate(-1)}
-            >
-              Volver
-            </button>
           </div>
+        </div>
+      )}
+
+      {episodes.length > 0 && (
+        <div className="detalle__episodios">
+          <h2>Episodios</h2>
+          <ul>
+            {episodes.map((ep) => (
+              <li key={ep.id}>
+                <strong>{ep.episode}</strong> — {ep.name}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </section>
