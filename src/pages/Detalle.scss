@@ -1,50 +1,6 @@
 .detalle {
     padding: 1.5rem;
   
-    &__wrap {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      gap: 1.5rem;
-    }
-  
-    &__media {
-      justify-self: center;
-  
-      img {
-        max-width: 320px;
-        width: 100%;
-        border-radius: 1rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      }
-    }
-  
-    &__info {
-      display: grid;
-      gap: .5rem;
-  
-      h1 {
-        font-size: clamp(1.5rem, 3vw, 2rem);
-        font-weight: 700;
-      }
-  
-      p {
-        font-size: 1rem;
-        line-height: 1.4;
-      }
-    }
-  
-    @media (min-width: 768px) {
-      &__wrap {
-        grid-template-columns: 300px 1fr;
-        align-items: start;
-      }
-    }
-  }
-  
-  .detalle { padding: 1.5rem; }
-
-  .detalle { // botón volver
     &__back {
       margin: 0 0 1rem 0;
       padding: .5rem .75rem;
@@ -53,8 +9,56 @@
       border-radius: .5rem;
       cursor: pointer;
       font-weight: 600;
-      transition: background .2s, border-color .2s;
+      transition: background .2s, border-color .2s, transform .1s;
       &:hover { background:#f7f7f7; border-color:#ccc; }
+      &:active { transform: translateY(1px); }
+    }
+  
+    &__wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 1.25rem;
+    }
+  
+    &__media {
+      img {
+        display: block;
+        width: 100%;
+        max-width: 360px;
+        border-radius: 1rem;
+        box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      }
+    }
+  
+    &__info {
+      display: grid;
+      gap: .5rem;
+  
+      h1 {
+        font-size: clamp(1.4rem, 2.5vw, 2rem);
+        line-height: 1.15;
+        margin: 0 0 .5rem 0;
+      }
+  
+      p {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.4;
+  
+        strong {
+          font-weight: 700;
+          margin-right: .25rem;
+        }
+      }
+    }
+  
+    /* layout responsive: columna en mobile, 2 columnas en desktop */
+    @media (min-width: 768px) {
+      &__wrap {
+        grid-template-columns: 340px 1fr;
+        align-items: start;
+      }
     }
   }
   
