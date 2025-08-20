@@ -26,12 +26,11 @@ export default function Buscador() {
 
       // La API devuelve 404 cuando no hay más páginas o no hay resultados
       if (!res.ok) {
-        // Si no hay resultados: vaciamos y no marcamos "error"
         if (res.status === 404) {
           setResults([]);
           setTotalPages(0);
           setPage(1);
-          setError(null);
+          setError(null); // 0 resultados no es error
           return;
         }
         throw new Error("HTTP error");
@@ -52,11 +51,24 @@ export default function Buscador() {
     }
   };
 
-  const handleSubmit = async (e) => { // bloque de paginado, es nuevo
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
     setHasSearched(true);
-    await doSearch(query.trim(), 1); // siempre empezamos en página 1
+    await doSearch(query.trim(), 1); // siempre arrancamos en página 1
+  };
+
+  const onChangeQuery = (e) => {
+    const val = e.target.value;
+    setQuery(val);
+    if (val === "") {
+      // si limpian el input, escondemos mensajes y resultados
+      setHasSearched(false);
+      setResults([]);
+      setError(null);
+      setPage(1);
+      setTotalPages(0);
+    }
   };
 
   const goPrev = () => {
@@ -71,17 +83,19 @@ export default function Buscador() {
     <section className="buscador">
       <h1>Buscador</h1>
 
-      <form onSubmit={handleSubmit} role="search">
+      <form onSubmit={handleSubmit} role="search" aria-busy={loading}>
         <label htmlFor="q">¿Qué querés buscar?</label>
         <input
           id="q"
           type="search"
           placeholder="Ej: Rick, Morty, Summer…"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={onChangeQuery}
           autoComplete="off"
         />
-        <button type="submit">Buscar</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Buscando..." : "Buscar"}
+        </button>
       </form>
 
       {loading && (
@@ -114,33 +128,34 @@ export default function Buscador() {
             ))}
           </div>
 
-          {/* Controles de paginado */}
-          <div className="pager">
-            <button
-              className="pager__btn"
-              onClick={goPrev}
-              disabled={page <= 1}
-              aria-label="Página anterior"
-            >
-              ‹ Anterior
-            </button>
+          {/* Controles de paginado (solo si hay más de 1 página) */}
+          {totalPages > 1 && (
+            <div className="pager">
+              <button
+                className="pager__btn"
+                onClick={goPrev}
+                disabled={page <= 1 || loading}
+                aria-label="Página anterior"
+              >
+                ‹ Anterior
+              </button>
 
-            <span className="pager__info">
-              Página <strong>{page}</strong> de <strong>{totalPages}</strong>
-            </span>
+              <span className="pager__info">
+                Página <strong>{page}</strong> de <strong>{totalPages}</strong>
+              </span>
 
-            <button
-              className="pager__btn"
-              onClick={goNext}
-              disabled={page >= totalPages}
-              aria-label="Página siguiente"
-            >
-              Siguiente ›
-            </button>
-          </div>
+              <button
+                className="pager__btn"
+                onClick={goNext}
+                disabled={page >= totalPages || loading}
+                aria-label="Página siguiente"
+              >
+                Siguiente ›
+              </button>
+            </div>
+          )}
         </>
       )}
     </section>
   );
 }
-
