@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Card from "./Card.jsx";
-import "./Buscador.scss";
+import Card from "./Card.jsx";        // si Card.jsx está en /pages
+import "./Buscador.scss";             // asegura importar los estilos
 
 export default function Buscador() {
   const [query, setQuery] = useState("");
@@ -48,13 +48,16 @@ export default function Buscador() {
         <button type="submit">Buscar</button>
       </form>
 
-      <div className="resultados">
-        {loading && <p>Cargando...</p>}
-        {error && !loading && <p>{error}</p>}
-        {!loading && !error && results.length > 0 &&
-          results.map((item) => <Card key={item.id} personaje={item} />)
-        }
-      </div>
+      {loading && <p>Cargando...</p>}
+      {error && !loading && <p>{error}</p>}
+
+      {!loading && !error && results.length > 0 && (
+        <div className="results">
+          {results.map((item) => (
+            <Card key={item.id} personaje={item} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -1,22 +1,21 @@
+import { useNavigate } from "react-router-dom";
+// trae el SCSS desde components porque el archivo .scss lo puse en diferentes carpetas
+import "../components/Card.scss";
+
 export default function Card({ personaje }) {
-    console.log("[DEBUG] Render Card ->", personaje?.name);
-    return (
-      <article
-        style={{
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          padding: "0.5rem",
-          textAlign: "center",
-          background: "#fafafa",
-        }}
-      >
-        <img
-          src={personaje.image}
-          alt={personaje.name}
-          style={{ width: "100%", borderRadius: "8px" }}
-        />
-        <h3>{personaje.name}</h3>
-      </article>
-    );
-  }
-  
+  const navigate = useNavigate();
+  const go = () => navigate(`/detalle/${personaje.id}`);
+
+  return (
+    <article
+      className="card"
+      onClick={go}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && go()}
+    >
+      <img src={personaje.image} alt={personaje.name} loading="lazy" />
+      <h3>{personaje.name}</h3>
+    </article>
+  );
+}
