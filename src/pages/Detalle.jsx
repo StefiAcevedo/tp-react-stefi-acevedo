@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; 
 import "./Detalle.scss";
 
 export default function Detalle() {
   const { id } = useParams();
+  const navigate = useNavigate(); // botón volver
+
   const [personaje, setPersonaje] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,11 +29,16 @@ export default function Detalle() {
     fetchPersonaje();
   }, [id]);
 
-  if (loading) return <p style={{padding:'1rem'}}>Cargando...</p>;
-  if (error) return <p style={{padding:'1rem'}}>{error}</p>;
+  if (loading) return <p style={{ padding: "1rem" }}>Cargando...</p>;
+  if (error) return <p style={{ padding: "1rem" }}>{error}</p>;
 
   return (
     <section className="detalle">
+      {/* Botón volver*/}
+      <button className="detalle__back" onClick={() => navigate(-1)}>
+        ← Volver
+      </button>
+
       {personaje && (
         <div className="detalle__wrap">
           <div className="detalle__media">
@@ -39,11 +46,21 @@ export default function Detalle() {
           </div>
           <div className="detalle__info">
             <h1>{personaje.name}</h1>
-            <p><strong>Especie:</strong> {personaje.species}</p>
-            <p><strong>Estado:</strong> {personaje.status}</p>
-            <p><strong>Género:</strong> {personaje.gender}</p>
-            <p><strong>Origen:</strong> {personaje.origin?.name}</p>
-            <p><strong>Ubicación:</strong> {personaje.location?.name}</p>
+            <p>
+              <strong>Especie:</strong> {personaje.species}
+            </p>
+            <p>
+              <strong>Estado:</strong> {personaje.status}
+            </p>
+            <p>
+              <strong>Género:</strong> {personaje.gender}
+            </p>
+            <p>
+              <strong>Origen:</strong> {personaje.origin?.name}
+            </p>
+            <p>
+              <strong>Ubicación:</strong> {personaje.location?.name}
+            </p>
           </div>
         </div>
       )}

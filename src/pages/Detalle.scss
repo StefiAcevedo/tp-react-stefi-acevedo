@@ -43,3 +43,18 @@
   }
   
   .detalle { padding: 1.5rem; }
+
+  .detalle { // botón volver
+    &__back {
+      margin: 0 0 1rem 0;
+      padding: .5rem .75rem;
+      border: 1px solid #ddd;
+      background: #fff;
+      border-radius: .5rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .2s, border-color .2s;
+      &:hover { background:#f7f7f7; border-color:#ccc; }
+    }
+  }
+  

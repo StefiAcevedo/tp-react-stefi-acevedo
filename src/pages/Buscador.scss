@@ -1,6 +1,6 @@
 .buscador {
     padding: 2rem;
-    max-width: 800px;
+    max-width: 1000px; /* un poco más ancho para que entren varias columnas */
     margin: 0 auto;
   
     h1 {
@@ -45,10 +45,11 @@
     }
   
     .results {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        justify-items: center; /* centra cada card dentro de su espacio */
-      }
+      display: grid;
+      gap: 1rem; /* espacio entre cards */
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      justify-items: center; /* centra cada card dentro de su celda */
+      align-items: start;
+    }
   }
   
