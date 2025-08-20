@@ -1,13 +1,51 @@
-import React from "react";
+import { useState } from "react";
+import { useMovies } from "../hooks/useMovies";
+import MovieCard from "../components/MovieCard";
 
-const UltimosLanzamientos = () => {
+export default function UltimosLanzamientos() {
+  const [page, setPage] = useState(1);
+  const { data, loading, error } = useMovies("now_playing", page);
+
+  const results = data.results || [];
+  const totalPages = data.total_pages || 1;
+
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Últimos lanzamientos</h1>
-      {/* Acá van las cards de películas con paginado ver estilos en general! */}
-      <p className="text-gray-600">Próximamente verás acá las últimas películas estrenadas.</p>
-    </div>
+    <section style={{ padding: "1rem", maxWidth: 1100, margin: "0 auto" }}>
+      <h1>Últimos lanzamientos</h1>
+
+      {loading && <p>Cargando…</p>}
+      {error && !loading && <p>Error: {String(error)}</p>}
+
+      {!loading && !error && results.length > 0 && (
+        <>
+          <div
+            style={{
+              display: "grid",
+              gap: "1rem",
+              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+              alignItems: "start",
+            }}
+          >
+            {results.map((m) => (
+              <MovieCard key={m.id} movie={m} />
+            ))}
+          </div>
+
+          <div style={{ display: "flex", gap: ".75rem", justifyContent: "center", marginTop: "1rem" }}>
+            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>
+              ‹ Anterior
+            </button>
+            <span>
+              Página <strong>{page}</strong> de <strong>{totalPages}</strong>
+            </span>
+            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}>
+              Siguiente ›
+            </button>
+          </div>
+        </>
+      )}
+
+      {!loading && !error && results.length === 0 && <p>No hay resultados.</p>}
+    </section>
   );
-};
-{/* prueba para funcionamiento de git */}
-export default UltimosLanzamientos;
+}
