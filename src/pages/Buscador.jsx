@@ -9,34 +9,62 @@ export default function Buscador() {
   const [error, setError] = useState(null);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!query.trim()) return;
+  // estados para paginado
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
-    setHasSearched(true);
+  const doSearch = async (q, pageToFetch = 1) => {
     setLoading(true);
     setError(null);
-    setResults([]);
 
     try {
       const res = await fetch(
-        `https://rickandmortyapi.com/api/character/?name=${encodeURIComponent(query)}`
+        `https://rickandmortyapi.com/api/character/?name=${encodeURIComponent(
+          q
+        )}&page=${pageToFetch}`
       );
-      if (!res.ok) throw new Error("HTTP error");
+
+      // La API devuelve 404 cuando no hay más páginas o no hay resultados
+      if (!res.ok) {
+        // Si no hay resultados: vaciamos y no marcamos "error"
+        if (res.status === 404) {
+          setResults([]);
+          setTotalPages(0);
+          setPage(1);
+          setError(null);
+          return;
+        }
+        throw new Error("HTTP error");
+      }
+
       const data = await res.json();
-
       const list = data.results ?? [];
-      setResults(list);
+      const pagesFromApi = data.info?.pages ?? 0;
 
-      // Importante! el error no aplica si la lista viene vacía
-      // (así se muestra el mensaje amigable de “Probá con otro nombre”).
+      setResults(list);
+      setTotalPages(pagesFromApi);
+      setPage(pageToFetch);
       setError(null);
     } catch {
-      // Importante! El error solo es para fallas reales de red/servidor
       setError("Ocurrió un problema al buscar. Probá de nuevo.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSubmit = async (e) => { // bloque de paginado, es nuevo
+    e.preventDefault();
+    if (!query.trim()) return;
+    setHasSearched(true);
+    await doSearch(query.trim(), 1); // siempre empezamos en página 1
+  };
+
+  const goPrev = () => {
+    if (page > 1) doSearch(query.trim(), page - 1);
+  };
+
+  const goNext = () => {
+    if (page < totalPages) doSearch(query.trim(), page + 1);
   };
 
   return (
@@ -79,12 +107,40 @@ export default function Buscador() {
       )}
 
       {!loading && !error && results.length > 0 && (
-        <div className="results">
-          {results.map((item) => (
-            <Card key={item.id} personaje={item} />
-          ))}
-        </div>
+        <>
+          <div className="results">
+            {results.map((item) => (
+              <Card key={item.id} personaje={item} />
+            ))}
+          </div>
+
+          {/* Controles de paginado */}
+          <div className="pager">
+            <button
+              className="pager__btn"
+              onClick={goPrev}
+              disabled={page <= 1}
+              aria-label="Página anterior"
+            >
+              ‹ Anterior
+            </button>
+
+            <span className="pager__info">
+              Página <strong>{page}</strong> de <strong>{totalPages}</strong>
+            </span>
+
+            <button
+              className="pager__btn"
+              onClick={goNext}
+              disabled={page >= totalPages}
+              aria-label="Página siguiente"
+            >
+              Siguiente ›
+            </button>
+          </div>
+        </>
       )}
     </section>
   );
 }
+

@@ -111,4 +111,37 @@
   @media (prefers-reduced-motion: reduce) {
     .skel-img, .skel-line { animation: none; }
   }
+
+  /* Paginado, es nuevo, mejora! */
+.pager {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: .75rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .pager__btn {
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background .2s, border-color .2s;
+  
+    &:hover { background: #f7f7f7; border-color: #bbb; }
+  
+    &:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      background: #f5f5f5;
+    }
+  }
+  
+  .pager__info {
+    font-size: .95rem;
+    color: #444;
+  }
   
