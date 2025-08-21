@@ -19,8 +19,7 @@ export default function AppRouter() {
         <Route path="/populares" element={<Populares />} />
         <Route path="/buscador" element={<Buscador />} />
         <Route path="/detalle/:id" element={<Detalle />} />
-        {/* Ruta de prueba (opcional) */}
-        <Route path="/__tmdb" element={<TmdbTest />} />
+
         {/* Fallback */}
         <Route path="*" element={<div style={{ padding: 16 }}>404</div>} />
       </Routes>
