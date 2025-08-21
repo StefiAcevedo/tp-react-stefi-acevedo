@@ -7,7 +7,7 @@ export default function NavBar() {
   const linkClass = ({ isActive }) =>
     isActive ? "nav__link active" : "nav__link";
 
-  const toggle = () => setOpen(v => !v);
+  const toggle = () => setOpen((v) => !v);
   const close = () => setOpen(false);
 
   return (
