@@ -52,3 +52,66 @@
     }
   }
   
+  .movie-card__actions {   /* bloque para favoritos! */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  
+  .fav-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .fav-btn:hover {
+    transform: scale(1.2);
+  }
+  
+  .fav-btn.active {
+    color: #e63946; /* rojo para favoritos */
+  }
+  
+  /* Contenedor de la miniatura para posicionar el fab */
+.movie-card__thumb {
+    position: relative;
+  
+    img {
+      display: block;
+      width: 100%;
+      border-radius: 8px;
+    }
+  }
+  
+  /* Botón flotante: círculo blanco arriba a la derecha */
+  .fav-fab {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  
+  .fav-fab:hover {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 6px 14px rgba(0,0,0,.18);
+  }
+  
+  /* Colorcito más marcado cuando está activo */
+  .fav-fab.active {
+    color: #e63946;
+  }
+  
