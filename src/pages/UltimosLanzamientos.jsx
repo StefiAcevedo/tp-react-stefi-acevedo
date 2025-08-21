@@ -11,7 +11,7 @@ export default function UltimosLanzamientos() {
   const totalPages = data?.total_pages || 1;
 
   return (
-    <section style={{ padding: "1rem", maxWidth: 1100, margin: "0 auto" }}>
+    <section style={{ padding: "1rem", maxWidth: 1280, margin: "0 auto" }}>
       <h1>Últimos lanzamientos</h1>
 
       {loading && <p>Cargando…</p>}
@@ -19,14 +19,7 @@ export default function UltimosLanzamientos() {
 
       {!loading && !error && results.length > 0 && (
         <>
-          <div
-            style={{
-              display: "grid",
-              gap: "1rem",
-              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              alignItems: "start",
-            }}
-          >
+          <div className="movies-grid">
             {results.map((m) => (
               <MovieCard key={m.id} movie={m} />
             ))}
