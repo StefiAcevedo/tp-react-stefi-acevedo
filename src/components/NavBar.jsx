@@ -1,14 +1,50 @@
-// src/components/NavBar.jsx
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./NavBar.scss";
 
 export default function NavBar() {
+  const [open, setOpen] = useState(false);
+  const linkClass = ({ isActive }) =>
+    isActive ? "nav__link active" : "nav__link";
+
+  const toggle = () => setOpen((v) => !v);
+  const close = () => setOpen(false);
+
   return (
-    <nav className="nav">
-      <NavLink to="/" end>Inicio</NavLink>
-      <NavLink to="/ultimos-lanzamientos">Últimos lanzamientos</NavLink>
-      <NavLink to="/populares">Populares</NavLink>
-      <NavLink to="/buscador">Buscador</NavLink>
+    <nav className={`nav ${open ? "is-open" : ""}`}>
+      <div className="nav__bar">
+        <NavLink to="/" end className="nav__brand" onClick={close}>
+          Inicio
+        </NavLink>
+
+        <button
+          className={`nav__toggle ${open ? "is-open" : ""}`}
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={open}
+          aria-controls="primary-navigation"
+          onClick={toggle}
+        >
+          <span className="nav__toggle-line" />
+          <span className="nav__toggle-line" />
+          <span className="nav__toggle-line" />
+        </button>
+      </div>
+
+      <div
+        id="primary-navigation"
+        className={`nav__links ${open ? "is-open" : ""}`}
+        onClick={close}
+      >
+        <NavLink to="/ultimos-lanzamientos" className={linkClass}>
+          Últimos Lanzamientos
+        </NavLink>
+        <NavLink to="/populares" className={linkClass}>
+          Populares
+        </NavLink>
+        <NavLink to="/buscador" className={linkClass}>
+          Buscador
+        </NavLink>
+      </div>
     </nav>
   );
 }
