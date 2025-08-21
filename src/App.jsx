@@ -1,7 +1,13 @@
-import AppRouter from './router/Router';
+import AppRouter from "./router/Router.jsx";
+import Footer from "./components/Footer";
 
-function App() {
-  return <AppRouter />;
+export default function App() {
+  return (
+    <div className="app-shell">
+      <div className="app-main">
+        <AppRouter />
+      </div>
+      <Footer />
+    </div>
+  );
 }
-
-export default App;

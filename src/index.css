@@ -1,0 +1,13 @@
+/* Sticky footer layout */
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .app-main {
+    flex: 1;            /* empuja el footer hacia abajo */
+    display: flex;
+    flex-direction: column;
+  }
+  
