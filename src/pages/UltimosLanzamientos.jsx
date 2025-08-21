@@ -1,3 +1,4 @@
+// src/pages/UltimosLanzamientos.jsx
 import { useState } from "react";
 import { useMovies } from "../hooks/useMovies";
 import MovieCard from "../components/MovieCard";
@@ -6,8 +7,8 @@ export default function UltimosLanzamientos() {
   const [page, setPage] = useState(1);
   const { data, loading, error } = useMovies("now_playing", page);
 
-  const results = data.results || [];
-  const totalPages = data.total_pages || 1;
+  const results = data?.results || [];
+  const totalPages = data?.total_pages || 1;
 
   return (
     <section style={{ padding: "1rem", maxWidth: 1100, margin: "0 auto" }}>
@@ -31,14 +32,24 @@ export default function UltimosLanzamientos() {
             ))}
           </div>
 
-          <div style={{ display: "flex", gap: ".75rem", justifyContent: "center", marginTop: "1rem" }}>
-            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}>
+          <div
+            style={{
+              display: "flex",
+              gap: ".75rem",
+              justifyContent: "center",
+              marginTop: "1rem",
+            }}
+          >
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page <= 1}>
               ‹ Anterior
             </button>
             <span>
               Página <strong>{page}</strong> de <strong>{totalPages}</strong>
             </span>
-            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages}
+            >
               Siguiente ›
             </button>
           </div>
