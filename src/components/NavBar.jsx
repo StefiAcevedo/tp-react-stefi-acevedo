@@ -1,15 +1,14 @@
-import { Link } from 'react-router-dom';
+// src/components/NavBar.jsx
+import { NavLink } from "react-router-dom";
+import "./NavBar.scss";
 
-function NavBar() {
+export default function NavBar() {
   return (
-    <nav style={{ padding: '1rem', background: '#eee' }}>
-      <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none' }}>
-        <li><Link to="/">Inicio</Link></li>
-        <li><Link to="/populares">Populares</Link></li>
-        <li><Link to="/buscador">Buscador</Link></li>
-      </ul>
+    <nav className="nav">
+      <NavLink to="/" end>Inicio</NavLink>
+      <NavLink to="/ultimos-lanzamientos">Últimos lanzamientos</NavLink>
+      <NavLink to="/populares">Populares</NavLink>
+      <NavLink to="/buscador">Buscador</NavLink>
     </nav>
   );
 }
-
-export default NavBar;
