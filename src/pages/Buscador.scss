@@ -1,0 +1,109 @@
+.buscador {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  
+    h1 {
+      margin-bottom: 1rem;
+      text-align: center;
+      font-size: 2rem;
+      color: #4a4a4a;
+    }
+  
+    form {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 2rem;
+  
+      input {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: 1px solid #bbb;
+        border-radius: 8px;
+  
+        &:focus {
+          outline: none;
+          border-color: #6a5acd;
+          box-shadow: 0 0 4px #6a5acd50;
+        }
+      }
+  
+      button {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        background: #6a5acd;
+        color: white;
+        cursor: pointer;
+        transition: background 0.2s;
+  
+        &:hover { background: #5a4bcf; }
+        &:disabled { opacity: .6; cursor: not-allowed; }
+      }
+    }
+  
+    .results {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      justify-items: center;
+      align-items: start;
+    }
+  }
+  
+  /* Skeletons de carga */
+  .skeletons {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    align-items: start;
+    min-height: 320px;
+  }
+  .skel-card {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 220px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f3f3f3;
+    padding: 0.5rem;
+  }
+  .skel-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #ececec 25%, #f5f5f5 37%, #ececec 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.2s infinite;
+  }
+  .skel-line {
+    height: 12px;
+    margin-top: .5rem;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #ececec 25%, #f5f5f5 37%, #ececec 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.2s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Accesibilidad extra */
+  .buscador input:focus,
+  .buscador button:focus {
+    outline: 2px solid #6a5acd;
+    outline-offset: 2px;
+  }
+  
+  /* Mobile: menos padding */
+  @media (max-width: 480px) {
+    .buscador { padding: 1rem; }
+  }
+  
+  /* Respeto reducción de motion */
+  @media (prefers-reduced-motion: reduce) {
+    .skel-img, .skel-line { animation: none; }
+  }
+  
