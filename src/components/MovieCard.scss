@@ -1,11 +1,11 @@
 /* src/components/MovieCard.scss */
 .movie-card {
-  display: flex;
+  display: flex;                 /* disposición en columna para imagen, título y botón */
   flex-direction: column;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #fafafa;
-  padding: 0.75rem;
+  padding: 0.75rem;              
   text-align: center;
   width: 100%;
   max-width: 220px;
@@ -20,14 +20,14 @@
 
   h3 {
     font-size: 0.95rem;
-    margin: 0.5rem 0 0.4rem;
+    margin: 0.5rem 0 0.4rem;     
     color: #333;
     line-height: 1.25;
-    min-height: 2.4em; /* para equilibrar cards con títulos largos/cortos */
+    min-height: 2.4em;           /* ayuda a mantener altura pareja en las cards */
   }
 
   .movie-card__btn {
-    margin-top: auto;           /* asegura que quede al final */
+    margin-top: auto;            /* asegura que quede al final */
     align-self: center;
     display: inline-block;
     padding: 0.5rem 0.8rem;
@@ -39,7 +39,7 @@
     cursor: pointer;
     transition: background .2s;
     text-decoration: none;
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.15rem;      
   }
 
   .movie-card__btn:hover {
