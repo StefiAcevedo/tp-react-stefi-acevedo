@@ -1,53 +1,54 @@
-/* src/components/MovieCard.scss */
 .movie-card {
-  display: flex;                 /* disposición en columna para imagen, título y botón */
-  flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #fafafa;
-  padding: 0.75rem;              
-  text-align: center;
-  width: 100%;
-  max-width: 220px;
-  box-sizing: border-box;
-  transition: transform .2s, box-shadow .2s;
-
-  img {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+    padding: 0.75rem;
+    text-align: center;
+  
+    /* CLAVES para que el grid funcione en múltiples columnas */
     width: 100%;
-    border-radius: 8px;
-    display: block;
+    max-width: none;      /* que NO limite el ancho dentro de la celda */
+    box-sizing: border-box;
+  
+    transition: transform .2s, box-shadow .2s;
+  
+    img {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+  
+    h3 {
+      font-size: 0.95rem;
+      margin: 0.5rem 0 0.4rem;
+      color: #333;
+      line-height: 1.25;
+      min-height: 2.4em;  /* equilibra alturas */
+    }
+  
+    .movie-card__btn {
+      margin-top: auto;
+      align-self: center;
+      display: inline-block;
+      padding: 0.5rem 0.8rem;
+      background: #6a5acd;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+      text-decoration: none;
+      margin-bottom: 0.15rem;
+    }
+  
+    .movie-card__btn:hover { background: #5a4bcf; }
+  
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,.12);
+    }
   }
-
-  h3 {
-    font-size: 0.95rem;
-    margin: 0.5rem 0 0.4rem;     
-    color: #333;
-    line-height: 1.25;
-    min-height: 2.4em;           /* ayuda a mantener altura pareja en las cards */
-  }
-
-  .movie-card__btn {
-    margin-top: auto;            /* asegura que quede al final */
-    align-self: center;
-    display: inline-block;
-    padding: 0.5rem 0.8rem;
-    background: #6a5acd;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background .2s;
-    text-decoration: none;
-    margin-bottom: 0.15rem;      
-  }
-
-  .movie-card__btn:hover {
-    background: #5a4bcf;
-  }
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,.12);
-  }
-}
+  
