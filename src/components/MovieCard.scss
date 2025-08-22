@@ -6,29 +6,55 @@
     background: #fafafa;
     padding: 0.75rem;
     text-align: center;
-  
-    /* CLAVES para que el grid funcione en múltiples columnas */
     width: 100%;
-    max-width: none;      /* que NO limite el ancho dentro de la celda */
     box-sizing: border-box;
-  
     transition: transform .2s, box-shadow .2s;
   
-    img {
+    &__poster-wrap {
+      position: relative;
+    }
+  
+    &__poster {
       width: 100%;
       border-radius: 8px;
       display: block;
     }
   
-    h3 {
+    .fav-fab {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,.15);
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+  
+      &:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 6px 14px rgba(0,0,0,.18);
+      }
+  
+      &.is-active {
+        color: #e63946;
+      }
+    }
+  
+    &__title {
       font-size: 0.95rem;
       margin: 0.5rem 0 0.4rem;
       color: #333;
       line-height: 1.25;
-      min-height: 2.4em;  /* equilibra alturas */
+      min-height: 2.4em;
     }
   
-    .movie-card__btn {
+    &__btn {
       margin-top: auto;
       align-self: center;
       display: inline-block;
@@ -42,76 +68,13 @@
       transition: background .2s;
       text-decoration: none;
       margin-bottom: 0.15rem;
-    }
   
-    .movie-card__btn:hover { background: #5a4bcf; }
+      &:hover { background: #5a4bcf; }
+    }
   
     &:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 12px rgba(0,0,0,.12);
     }
-  }
-  
-  .movie-card__actions {   /* bloque para favoritos! */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  
-  .fav-btn {
-    background: transparent;
-    border: none;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .fav-btn:hover {
-    transform: scale(1.2);
-  }
-  
-  .fav-btn.active {
-    color: #e63946; /* rojo para favoritos */
-  }
-  
-  /* Contenedor de la miniatura para posicionar el fab */
-.movie-card__thumb {
-    position: relative;
-  
-    img {
-      display: block;
-      width: 100%;
-      border-radius: 8px;
-    }
-  }
-  
-  /* Botón flotante: círculo blanco arriba a la derecha */
-  .fav-fab {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 36px;
-    height: 36px;
-    border: none;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,.15);
-    display: grid;
-    place-items: center;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: transform .15s ease, box-shadow .15s ease;
-  }
-  
-  .fav-fab:hover {
-    transform: translateY(-1px) scale(1.03);
-    box-shadow: 0 6px 14px rgba(0,0,0,.18);
-  }
-  
-  /* Colorcito más marcado cuando está activo */
-  .fav-fab.active {
-    color: #e63946;
   }
   

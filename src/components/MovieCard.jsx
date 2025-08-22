@@ -1,35 +1,46 @@
 // src/components/MovieCard.jsx
 import { Link } from "react-router-dom";
 import { useFavorites } from "../hooks/useFavorites";
+import { getImageUrl } from "../services/tmdb";
 import "./MovieCard.scss";
 
 export default function MovieCard({ movie }) {
   const { isFav, toggle } = useFavorites();
+  const poster = getImageUrl(movie?.poster_path, "w342");
+  const fav = isFav(movie?.id);
 
   return (
-    <div className="movie-card">
-      <Link to={`/detalle/${movie.id}`}>
-        <img
-          src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-          alt={movie.title}
-        />
-      </Link>
-
-      <h3>{movie.title}</h3>
-
-      <div className="movie-card__actions">
+    <article className="movie-card">
+      <div className="movie-card__poster-wrap">
+        {/* Botón favorito flotante */}
         <button
-          className={`fav-btn ${isFav(movie.id) ? "active" : ""}`}
+          type="button"
+          className={`fav-fab ${fav ? "is-active" : ""}`}
           onClick={() => toggle(movie)}
-          aria-label={isFav(movie.id) ? "Quitar de favoritos" : "Agregar a favoritos"}
+          aria-label={fav ? "Quitar de favoritos" : "Agregar a favoritos"}
+          title={fav ? "Quitar de favoritos" : "Agregar a favoritos"}
         >
-          {isFav(movie.id) ? "❤️" : "🤍"}
+          {fav ? "❤️" : "🤍"}
         </button>
 
-        <Link to={`/detalle/${movie.id}`} className="movie-card__btn">
-          Ver detalle
+        {/* Imagen clickeable al detalle */}
+        <Link to={`/detalle/${movie.id}`} aria-label={`Ver detalle de ${movie.title}`}>
+          {poster && (
+            <img
+              className="movie-card__poster"
+              src={poster}
+              alt={movie.title}
+              loading="lazy"
+            />
+          )}
         </Link>
       </div>
-    </div>
+
+      <h3 className="movie-card__title">{movie.title}</h3>
+
+      <Link className="movie-card__btn" to={`/detalle/${movie.id}`}>
+        Ver detalle
+      </Link>
+    </article>
   );
 }
