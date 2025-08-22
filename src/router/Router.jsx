@@ -6,7 +6,7 @@ import UltimosLanzamientos from "../pages/UltimosLanzamientos";
 import Populares from "../pages/Populares";
 import Buscador from "../pages/Buscador";
 import Detalle from "../pages/Detalle";
-import Favoritos from "../pages/Favoritos";   // esto es NUEVO
+import Favoritos from "../pages/Favoritos"; 
 
 import NavBar from "../components/NavBar";
 
@@ -19,10 +19,9 @@ export default function AppRouter() {
         <Route path="/ultimos-lanzamientos" element={<UltimosLanzamientos />} />
         <Route path="/populares" element={<Populares />} />
         <Route path="/buscador" element={<Buscador />} />
-        <Route path="/favoritos" element={<Favoritos />} /> {/* esto es NUEVO */}
+        <Route path="/favoritos" element={<Favoritos />} />
         <Route path="/detalle/:id" element={<Detalle />} />
-        
-        {/* Fallback */}
+        <Route path="/__ping" element={<div style={{padding:16}}>PING OK</div>} />
         <Route path="*" element={<div style={{ padding: 16 }}>404</div>} />
       </Routes>
     </BrowserRouter>

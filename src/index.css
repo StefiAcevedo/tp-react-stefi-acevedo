@@ -74,24 +74,27 @@ nav {
   justify-content: center;
 }
 
-/* Es nuevo! Grid reutilizable para listados de películas */
+/* Grid reutilizable para listados de películas — 5/4/3/2/1 cols */
 .movies-grid {
-    display: grid !important;
-    gap: 1rem;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: start;
-  }
-  
-  @media (min-width: 600px) {
-    .movies-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-  @media (min-width: 900px) {
-    .movies-grid { grid-template-columns: repeat(4, 1fr); }
-  }
-  @media (min-width: 1200px) {
-    .movies-grid { grid-template-columns: repeat(5, 1fr); } /* con esto deben entrar 5 en desktop */
-  }
-  
-  /* asegura que cada card ocupe toda su celda */
-  .movies-grid > * { width: 100%; }
-  
+  display: grid !important;
+  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: start;
+}
+
+/* Breakpoints descendentes */
+@media (max-width: 1200px) {
+  .movies-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 900px) {
+  .movies-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 600px) {
+  .movies-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 380px) {
+  .movies-grid { grid-template-columns: 1fr; }
+}
+
+/* asegura que cada card ocupe toda su celda */
+.movies-grid > * { width: 100%; }
