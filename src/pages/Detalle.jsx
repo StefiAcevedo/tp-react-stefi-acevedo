@@ -1,11 +1,16 @@
+// src/pages/Detalle.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../services/tmdb";
 import { useMovieDetail } from "../hooks/useMovieDetail";
+import { useFavorites } from "../hooks/useFavorites";
+import "./Detalle.scss";
 
 export default function Detalle() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { movie, trailer, loading, error } = useMovieDetail(id);
+
+  const { movie, trailesr, loading, error } = useMovieDetail(id);
+  const { isFav, toggle } = useFavorites();
 
   if (loading) return <section style={{ padding: 16 }}>Cargando…</section>;
 
@@ -42,7 +47,8 @@ export default function Detalle() {
   if (!movie) return <section style={{ padding: 16 }}>No se encontró la película.</section>;
 
   const backdrop = getImageUrl(movie.backdrop_path, "w780");
-  const poster = getImageUrl(movie.poster_path, "w342");
+  const poster   = getImageUrl(movie.poster_path, "w342");
+  const fav      = isFav(movie.id);
 
   const openTrailer = () => {
     if (!trailer) return;
@@ -91,7 +97,12 @@ export default function Detalle() {
         </div>
 
         <div>
-          <h1 style={{ marginTop: 0 }}>{movie.title}</h1>
+          {/* Título + badge de favoritos */}
+          <div style={{ display: "flex", alignItems: "center", gap: ".5rem", flexWrap: "wrap" }}>
+            <h1 style={{ marginTop: 0 }}>{movie.title}</h1>
+            {fav && <span className="fav-badge">En favoritos</span>}
+          </div>
+
           <p style={{ opacity: 0.9 }}>{movie.overview || "Sin descripción disponible."}</p>
 
           <p style={{ marginTop: ".5rem" }}>
@@ -99,11 +110,29 @@ export default function Detalle() {
             <strong>Puntaje:</strong> {movie.vote_average?.toFixed?.(1) ?? "—"}
           </p>
 
+          {/* Botón ❤️ toggle */}
+          <button
+            onClick={() => toggle(movie)}
+            style={{
+              marginTop: ".75rem",
+              padding: ".5rem .9rem",
+              border: "1px solid #ccc",
+              borderRadius: 8,
+              background: "#fff",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            {fav ? "❤️ Quitar de favoritos" : "🤍 Agregar a favoritos"}
+          </button>
+
+          {/* Trailer */}
           {trailer && (
             <button
               onClick={openTrailer}
               style={{
                 marginTop: "0.75rem",
+                marginLeft: ".5rem",
                 padding: ".6rem 1rem",
                 border: "none",
                 borderRadius: 6,

@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useFavorites } from "../hooks/useFavorites";
 import "./NavBar.scss";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
+  const { favorites } = useFavorites(); // array de favs
+  const count = favorites?.length ?? 0;
+
   const linkClass = ({ isActive }) =>
     isActive ? "nav__link active" : "nav__link";
 
-  const toggle = () => setOpen((v) => !v);
+  const toggle = () => setOpen(v => !v);
   const close = () => setOpen(false);
 
   return (
@@ -38,11 +42,21 @@ export default function NavBar() {
         <NavLink to="/ultimos-lanzamientos" className={linkClass}>
           Últimos Lanzamientos
         </NavLink>
+
         <NavLink to="/populares" className={linkClass}>
           Populares
         </NavLink>
+
         <NavLink to="/buscador" className={linkClass}>
           Buscador
+        </NavLink>
+
+        {/* Item Favoritos con badge */}
+        <NavLink to="/favoritos" className={linkClass}>
+          Favoritos
+          <span className="nav__badge" aria-label={`Favoritos: ${count}`}>
+            {count}
+          </span>
         </NavLink>
       </div>
     </nav>

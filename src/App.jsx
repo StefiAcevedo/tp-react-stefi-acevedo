@@ -1,13 +1,12 @@
-import AppRouter from "./router/Router.jsx";
+// src/App.jsx
+import AppRouter from "./router/Router";
 import Footer from "./components/Footer";
 
 export default function App() {
   return (
-    <div className="app-shell">
-      <div className="app-main">
-        <AppRouter />
-      </div>
+    <>
+      <AppRouter />
       <Footer />
-    </div>
+    </>
   );
 }
