@@ -1,0 +1,30 @@
+/* src/pages/Home.scss */
+
+.home {
+    h1 {
+      margin-bottom: 1rem;
+    }
+  
+    .home__block {
+      margin: 1.5rem 0;
+    }
+  
+    /* Slider horizontal básico reutilizando MovieCard */
+    .slider {
+      overflow-x: auto;
+      padding-bottom: .25rem; /* un toque de aire para que no corte sombras */
+    }
+  
+    .slider__track {
+      display: flex;
+      gap: 1rem;
+    }
+  
+    /* las cards tengan ancho fijo dentro del slider */
+    .slider .movie-card {
+      min-width: 200px;  /* ancho mínimo de cada card en el slider */
+      max-width: 220px;
+      flex: 0 0 auto;    /* que no se estiren, se mantengan como ítems */
+    }
+  }
+  
