@@ -1,63 +1,88 @@
 // src/pages/Home.jsx
-import "./Home.scss";
-import MovieCard from "../components/MovieCard";
+import { useRef } from "react";
 import { useMovies } from "../hooks/useMovies";
+import MovieCard from "../components/MovieCard";
+import "./Home.scss";
 
-export default function Home() {
-  // Traemos 3 listas (página 1)
-  const { data: nowData, loading: l1, error: e1 } = useMovies("now_playing", 1);
-  const { data: popData, loading: l2, error: e2 } = useMovies("popular", 1);
-  const { data: topData, loading: l3, error: e3 } = useMovies("top_rated", 1);
+function CarouselRow({ title, items }) {
+  const scrollerRef = useRef(null);
 
-  const loading = l1 || l2 || l3;
-  const error = e1 || e2 || e3;
+  const scrollBy = (px) => {
+    scrollerRef.current?.scrollBy({ left: px, behavior: "smooth" });
+  };
 
-  const now = nowData?.results?.slice(0, 5) ?? [];
-  const popular = popData?.results?.slice(0, 10) ?? [];
-  const topRated = topData?.results?.slice(0, 10) ?? [];
+  const list = (items || []).slice(0, 10);
+  if (!list.length) return null;
 
   return (
-    <section className="home container">
-      <h1>Home</h1>
+    <section className="section">
+      <h2 className="section-title">{title}</h2>
 
-      {loading && <p>Cargando…</p>}
-      {error && !loading && <p>Error: {String(error)}</p>}
+      <div className="carousel">
+        <button
+          type="button"
+          aria-label="Anterior"
+          className="carousel__btn carousel__btn--left"
+          onClick={() => scrollBy(-600)}
+        >
+          ‹
+        </button>
 
-      {!loading && !error && (
+        <div ref={scrollerRef} className="carousel__track">
+          {list.map((m) => (
+            <div key={m.id} className="carousel__item">
+              <MovieCard movie={m} />
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          aria-label="Siguiente"
+          className="carousel__btn carousel__btn--right"
+          onClick={() => scrollBy(600)}
+        >
+          ›
+        </button>
+      </div>
+    </section>
+  );
+}
+
+export default function Home() {
+  const { data: nowData,  loading: nowLoading,  error: nowError }  = useMovies("now_playing", 1);
+  const { data: popData,  loading: popLoading,  error: popError }  = useMovies("popular", 1);
+  const { data: topData,  loading: topLoading,  error: topError }  = useMovies("top_rated", 1);
+
+  const now = nowData?.results ?? [];
+  const popular = popData?.results ?? [];
+  const top = topData?.results ?? [];
+
+  const anyLoading = nowLoading || popLoading || topLoading;
+  const anyError   = nowError   || popError   || topError;
+
+  return (
+    <main className="home container">
+      {anyLoading && <p className="home__status">Cargando…</p>}
+      {anyError && <p className="home__status error">Ocurrió un error al cargar Home.</p>}
+
+      {!anyLoading && !anyError && (
         <>
-          {/* Slider simple (con scroll) */}
-          <section className="home__block">
-            <h2>Recomendadas (Now Playing)</h2>
-            <div className="slider" tabIndex={0} aria-label="Películas recomendadas">
-              <div className="slider__track">
-                {now.map((m) => (
+          <CarouselRow title="Recomendadas" items={now} />
+          <CarouselRow title="Populares" items={popular} />
+
+          {!!top.length && (
+            <section className="section">
+              <h2 className="section-title">Mejor puntuadas</h2>
+              <div className="movies-grid">
+                {top.slice(0, 10).map((m) => (
                   <MovieCard key={m.id} movie={m} />
                 ))}
               </div>
-            </div>
-          </section>
-
-          {/* Lista: Populares (10) */}
-          <section className="home__block">
-            <h2>Populares</h2>
-            <div className="movies-grid">
-              {popular.map((m) => (
-                <MovieCard key={m.id} movie={m} />
-              ))}
-            </div>
-          </section>
-
-          {/* Lista: Mejor puntuadas (solo 10) */}
-          <section className="home__block">
-            <h2>Mejor puntuadas</h2>
-            <div className="movies-grid">
-              {topRated.map((m) => (
-                <MovieCard key={m.id} movie={m} />
-              ))}
-            </div>
-          </section>
+            </section>
+          )}
         </>
       )}
-    </section>
+    </main>
   );
 }
