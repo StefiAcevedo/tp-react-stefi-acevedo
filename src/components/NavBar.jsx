@@ -5,13 +5,16 @@ import "./NavBar.scss";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
-  const { favorites } = useFavorites(); // array de favs
-  const count = favorites?.length ?? 0;
+
+  // Soporta ambas variantes del hook: {list} o {items}
+  const fav = useFavorites();
+  const list = fav?.list ?? fav?.items ?? [];
+  const count = list.length;
 
   const linkClass = ({ isActive }) =>
     isActive ? "nav__link active" : "nav__link";
 
-  const toggle = () => setOpen(v => !v);
+  const toggle = () => setOpen((v) => !v);
   const close = () => setOpen(false);
 
   return (
@@ -42,21 +45,20 @@ export default function NavBar() {
         <NavLink to="/ultimos-lanzamientos" className={linkClass}>
           Últimos Lanzamientos
         </NavLink>
-
         <NavLink to="/populares" className={linkClass}>
           Populares
         </NavLink>
-
         <NavLink to="/buscador" className={linkClass}>
           Buscador
         </NavLink>
 
-        {/* Item Favoritos con badge */}
         <NavLink to="/favoritos" className={linkClass}>
           Favoritos
-          <span className="nav__badge" aria-label={`Favoritos: ${count}`}>
-            {count}
-          </span>
+          {count > 0 && (
+            <span className="nav__badge" aria-label={`${count} favoritos`}>
+              {count}
+            </span>
+          )}
         </NavLink>
       </div>
     </nav>

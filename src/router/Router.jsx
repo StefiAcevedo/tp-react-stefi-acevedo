@@ -6,6 +6,7 @@ import UltimosLanzamientos from "../pages/UltimosLanzamientos";
 import Populares from "../pages/Populares";
 import Buscador from "../pages/Buscador";
 import Detalle from "../pages/Detalle";
+import Favoritos from "../pages/Favoritos";
 import NavBar from "../components/NavBar";
 
 export default function AppRouter() {
@@ -17,6 +18,7 @@ export default function AppRouter() {
         <Route path="/ultimos-lanzamientos" element={<UltimosLanzamientos />} />
         <Route path="/populares" element={<Populares />} />
         <Route path="/buscador" element={<Buscador />} />
+        <Route path="/favoritos" element={<Favoritos />} />
         <Route path="/detalle/:id" element={<Detalle />} />
 
         {/* Ping de prueba */}
