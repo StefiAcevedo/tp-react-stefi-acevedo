@@ -6,16 +6,15 @@ import "./Home.scss";
 
 // Carrusel reutilizable (flechas, sin scrollbar visible)
 function CarouselRow({ title, items }) {
-  const trackRef = useRef(null);
+  const scrollerRef = useRef(null);
 
-  const scrollBy = (px) => {
-    const el = trackRef.current;
-    if (!el) return;
-    el.scrollBy({ left: px, behavior: "smooth" });
+  const scrollByPx = (px) => {
+    scrollerRef.current?.scrollBy({ left: px, behavior: "smooth" });
   };
 
-  // mostramos EXACTAMENTE 5 en Home
-  const visible = items.slice(0, 10);
+  // Mostramos hasta 10 elementos en los carruseles
+  const list = (items || []).slice(0, 10);
+  if (!list.length) return null;
 
   return (
     <section className="section">
@@ -23,15 +22,16 @@ function CarouselRow({ title, items }) {
 
       <div className="carousel">
         <button
-          className="carousel__btn carousel__btn--left"
+          type="button"
           aria-label="Anterior"
-          onClick={() => scrollBy(-600)}
+          className="carousel__btn carousel__btn--left"
+          onClick={() => scrollByPx(-600)}
         >
           ‹
         </button>
 
-        <div ref={trackRef} className="carousel__track">
-          {visible.map((m) => (
+        <div ref={scrollerRef} className="carousel__track">
+          {list.map((m) => (
             <div key={m.id} className="carousel__item">
               <MovieCard movie={m} />
             </div>
@@ -39,9 +39,10 @@ function CarouselRow({ title, items }) {
         </div>
 
         <button
-          className="carousel__btn carousel__btn--right"
+          type="button"
           aria-label="Siguiente"
-          onClick={() => scrollBy(600)}
+          className="carousel__btn carousel__btn--right"
+          onClick={() => scrollByPx(600)}
         >
           ›
         </button>
@@ -51,42 +52,45 @@ function CarouselRow({ title, items }) {
 }
 
 export default function Home() {
-  // Traemos 1 página de cada lista (suficiente para recortar a 5)
+  // 1 página por cada lista (suficiente para recortar a 10)
   const { data: nowData, loading: nowLoading, error: nowError } = useMovies("now_playing", 1);
   const { data: popData, loading: popLoading, error: popError } = useMovies("popular", 1);
   const { data: topData, loading: topLoading, error: topError } = useMovies("top_rated", 1);
 
   const now = nowData?.results ?? [];
   const popular = popData?.results ?? [];
-  const top = (topData?.results ?? []).slice(0, 10); // EXACTAMENTE 5 en la grilla
+  const top = topData?.results ?? [];
 
   const anyLoading = nowLoading || popLoading || topLoading;
-  const anyError = nowError || popError || topError;
+  const anyError   = nowError   || popError   || topError;
 
   return (
     <main className="home container">
-      {/* Estados visibles (evita “pantalla en blanco”) */}
+      {/* Estados visibles para evitar “pantalla en blanco” */}
       {anyLoading && <p className="home__status">Cargando datos de películas…</p>}
       {anyError && (
-        <p className="home__status error">Ocurrió un error al cargar Home. Revisá la consola.</p>
+        <p className="home__status error">
+          Ocurrió un error al cargar Home. Revisá la consola para más detalles.
+        </p>
       )}
 
+      {/* Mensaje si no hay nada que mostrar */}
       {!anyLoading && !anyError && now.length === 0 && popular.length === 0 && top.length === 0 && (
         <p className="home__status">No hay películas para mostrar en este momento.</p>
       )}
 
-      {/* Recomendadas (carrusel, recortado a 5) */}
+      {/* Recomendadas (carrusel) */}
       {!anyLoading && now.length > 0 && <CarouselRow title="Recomendadas" items={now} />}
 
-      {/* Populares (carrusel, recortado a 5) */}
+      {/* Populares (carrusel) */}
       {!anyLoading && popular.length > 0 && <CarouselRow title="Populares" items={popular} />}
 
-      {/* Mejor puntuadas (grilla, recortado a 5) */}
+      {/* Mejor puntuadas (grilla de 10) */}
       {!anyLoading && top.length > 0 && (
         <section className="section">
           <h2 className="section-title">Mejor puntuadas</h2>
           <div className="movies-grid">
-            {top.map((m) => (
+            {top.slice(0, 10).map((m) => (
               <MovieCard key={m.id} movie={m} />
             ))}
           </div>
