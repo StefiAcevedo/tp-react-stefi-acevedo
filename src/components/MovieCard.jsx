@@ -6,6 +6,7 @@ import "./MovieCard.scss";
 
 export default function MovieCard({ movie }) {
   const { isFav, toggle } = useFavorites();
+
   const poster = getImageUrl(movie?.poster_path, "w342");
   const fav = isFav(movie?.id);
 

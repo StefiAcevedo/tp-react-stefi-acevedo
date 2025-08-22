@@ -1,4 +1,3 @@
-// src/pages/Detalle.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../services/tmdb";
 import { useMovieDetail } from "../hooks/useMovieDetail";
@@ -9,12 +8,23 @@ export default function Detalle() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { movie, trailesr, loading, error } = useMovieDetail(id);
+  // Nota: soporta ambos formatos del hook (con `trailer` directo o con `videos`)
+  const {
+    movie,
+    trailer: hookTrailer,  
+    videos,               
+    loading,
+    error,
+  } = useMovieDetail(id);
+
   const { isFav, toggle } = useFavorites();
+
+  // Seguridad: no calculamos fav si aún no hay movie
+  const fav = movie ? isFav(movie.id) : false;
 
   if (loading) return <section style={{ padding: 16 }}>Cargando…</section>;
 
-  // error 404 amigable
+  // Error amigable
   if (error) {
     const msg = String(error?.message || error);
     const is404 = msg.includes("404");
@@ -48,11 +58,15 @@ export default function Detalle() {
 
   const backdrop = getImageUrl(movie.backdrop_path, "w780");
   const poster   = getImageUrl(movie.poster_path, "w342");
-  const fav      = isFav(movie.id);
+
+  // Trailer: usa el que venga del hook o lo busca en `videos.results`
+  const computedTrailer =
+    hookTrailer ||
+    videos?.results?.find?.((v) => v.type === "Trailer" && v.site === "YouTube");
 
   const openTrailer = () => {
-    if (!trailer) return;
-    window.open(`https://www.youtube.com/watch?v=${trailer.key}`, "_blank", "noopener");
+    if (!computedTrailer?.key) return;
+    window.open(`https://www.youtube.com/watch?v=${computedTrailer.key}`, "_blank", "noopener");
   };
 
   return (
@@ -97,8 +111,7 @@ export default function Detalle() {
         </div>
 
         <div>
-          {/* Título + badge de favoritos */}
-          <div style={{ display: "flex", alignItems: "center", gap: ".5rem", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: ".5rem" }}>
             <h1 style={{ marginTop: 0 }}>{movie.title}</h1>
             {fav && <span className="fav-badge">En favoritos</span>}
           </div>
@@ -126,8 +139,8 @@ export default function Detalle() {
             {fav ? "❤️ Quitar de favoritos" : "🤍 Agregar a favoritos"}
           </button>
 
-          {/* Trailer */}
-          {trailer && (
+          {/* Botón de tráiler (solo si existe) */}
+          {computedTrailer?.key && (
             <button
               onClick={openTrailer}
               style={{
@@ -150,3 +163,4 @@ export default function Detalle() {
     </section>
   );
 }
+
