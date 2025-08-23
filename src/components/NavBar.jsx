@@ -1,60 +1,66 @@
-import React, { useState } from 'react';
-import '../styles/NavBar.css';
-import { NavLink } from 'react-router-dom';
+// src/components/NavBar.jsx
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { useFavorites } from "../hooks/useFavorites";
+import "./NavBar.css";
 
-function NavBar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function NavBar() {
+  const [open, setOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  // Soporta ambas variantes del hook: {list} o {items}
+  const fav = useFavorites();
+  const list = fav?.list ?? fav?.items ?? [];
+  const count = list.length;
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
+  const linkClass = ({ isActive }) =>
+    isActive ? "nav__link active" : "nav__link";
+
+  const toggle = () => setOpen((v) => !v);
+  const close = () => setOpen(false);
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <div className="navbar-logo">Mi App</div>
+    <nav className={`nav ${open ? "is-open" : ""}`}>
+      <div className="nav__bar">
+        <NavLink to="/" end className="nav__brand" onClick={close}>
+          Inicio
+        </NavLink>
 
         <button
-          className={`navbar-toggle ${menuOpen ? 'open' : ''}`}
-          onClick={toggleMenu}
-          aria-label="Toggle navigation menu"
-          aria-expanded={menuOpen}
+          className={`nav__toggle ${open ? "is-open" : ""}`}
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={open}
+          aria-controls="primary-navigation"
+          onClick={toggle}
         >
-          <span className="bar"></span>
-          <span className="bar"></span>
-          <span className="bar"></span>
+          <span className="nav__toggle-line" />
+          <span className="nav__toggle-line" />
+          <span className="nav__toggle-line" />
         </button>
+      </div>
 
-        <ul className={`navbar-list ${menuOpen ? 'active' : ''}`}>
-          <li>
-            <NavLink to="/" className="navbar-link" end onClick={closeMenu}>
-              Inicio
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/populares" className="navbar-link" onClick={closeMenu}>
-              Populares
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/buscador" className="navbar-link" onClick={closeMenu}>
-              Buscador
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/ultimos-lanzamientos" className="navbar-link" onClick={closeMenu}>
-              Últimos Lanzamientos
-            </NavLink>
-          </li>
-        </ul>
+      <div
+        id="primary-navigation"
+        className={`nav__links ${open ? "is-open" : ""}`}
+        onClick={close}
+      >
+        <NavLink to="/ultimos-lanzamientos" className={linkClass}>
+          Últimos Lanzamientos
+        </NavLink>
+        <NavLink to="/populares" className={linkClass}>
+          Populares
+        </NavLink>
+        <NavLink to="/buscador" className={linkClass}>
+          Buscador
+        </NavLink>
+        <NavLink to="/favoritos" className={linkClass}>
+          Favoritos
+          {count > 0 && (
+            <span className="nav__badge" aria-label={`${count} favoritos`}>
+              {count}
+            </span>
+          )}
+        </NavLink>
       </div>
     </nav>
   );
 }
-
-export default NavBar;
-
