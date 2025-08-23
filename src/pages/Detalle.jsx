@@ -1,112 +1,164 @@
-import { useEffect, useState } from "react";
+// src/pages/Detalle.jsx
 import { useParams, useNavigate } from "react-router-dom";
+import { getImageUrl } from "../services/tmdb";
+import { useMovieDetail } from "../hooks/useMovieDetail";
+import { useFavorites } from "../hooks/useFavorites";
 import "./Detalle.scss";
 
 export default function Detalle() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [personaje, setPersonaje] = useState(null);
-  const [episodes, setEpisodes] = useState([]);
-  const [showAll, setShowAll] = useState(false);
+  // Soporta ambas variantes del hook (con `trailer` directo o con `videos`)
+  const {
+    movie,
+    trailer: hookTrailer,
+    videos,
+    loading,
+    error,
+  } = useMovieDetail(id);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { isFav, toggle } = useFavorites();
+  const fav = movie ? isFav(movie.id) : false;
 
-  useEffect(() => {
-    const ac = new AbortController();
-    const { signal } = ac;
+  if (loading) return <section style={{ padding: 16 }}>Cargando…</section>;
 
-    const fetchPersonaje = async () => {
-      setLoading(true);
-      setError(null);
-      setEpisodes([]);
-      setPersonaje(null);
-      try {
-        const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`, { signal });
-        if (!res.ok) throw new Error("No se pudo cargar el detalle");
-        const data = await res.json();
-        if (signal.aborted) return;
-        setPersonaje(data);
+  // Error amigable
+  if (error) {
+    const msg = String(error?.message || error);
+    const is404 = msg.includes("404");
+    return (
+      <section style={{ padding: 16, maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{ marginTop: 0 }}>Ups…</h2>
+        <p style={{ opacity: 0.85 }}>
+          {is404
+            ? "No encontramos esa película (puede que el ID no exista)."
+            : "Ocurrió un error al cargar la película."}
+        </p>
+        <button
+          onClick={() => navigate(-1)}
+          style={{
+            marginTop: "1rem",
+            padding: ".6rem 1rem",
+            border: "none",
+            borderRadius: 6,
+            background: "#6a5acd",
+            color: "#fff",
+            cursor: "pointer",
+          }}
+        >
+          ← Volver
+        </button>
+      </section>
+    );
+  }
 
-        // Cargar episodios (tolerante a fallos individuales)
-        if (Array.isArray(data.episode) && data.episode.length) {
-          const epPromises = data.episode.map(async (url) => {
-            try {
-              const r = await fetch(url, { signal });
-              if (!r.ok) throw new Error("EP fetch error");
-              return await r.json();
-            } catch {
-              return null; // saltamos episodios que fallen
-            }
-          });
+  if (!movie) return <section style={{ padding: 16 }}>No se encontró la película.</section>;
 
-          const all = await Promise.all(epPromises);
-          if (signal.aborted) return;
-          setEpisodes(all.filter(Boolean));
-        }
-      } catch (e) {
-        if (!signal.aborted) setError("Error cargando el personaje.");
-      } finally {
-        if (!signal.aborted) setLoading(false);
-      }
-    };
+  const backdrop = getImageUrl(movie.backdrop_path, "w780");
+  const poster = getImageUrl(movie.poster_path, "w342");
 
-    fetchPersonaje();
-    return () => ac.abort();
-  }, [id]);
+  // Trailer: usa el que venga del hook o lo busca en `videos.results`
+  const computedTrailer =
+    hookTrailer ||
+    videos?.results?.find?.((v) => v.type === "Trailer" && v.site === "YouTube");
 
-  if (loading) return <p style={{ padding: "1rem" }}>Cargando...</p>;
-  if (error) return <p style={{ padding: "1rem" }}>{error}</p>;
-
-  const hasEpisodes = episodes.length > 0;
-  const canToggle = episodes.length > 8;
-  const listToShow = showAll ? episodes : episodes.slice(0, 8);
+  const openTrailer = () => {
+    if (!computedTrailer?.key) return;
+    window.open(`https://www.youtube.com/watch?v=${computedTrailer.key}`, "_blank", "noopener");
+  };
 
   return (
-    <section className="detalle" aria-busy={loading}>
-      <button className="detalle__back" onClick={() => navigate(-1)}>
-        Volver
+    <section
+      style={{
+        padding: "1rem",
+        maxWidth: 1100,
+        margin: "0 auto",
+        background: backdrop ? `url(${backdrop}) center/cover no-repeat` : "#f5f5f5",
+        borderRadius: 12,
+      }}
+    >
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          marginBottom: "1rem",
+          padding: ".6rem 1rem",
+          border: "none",
+          borderRadius: 6,
+          background: "#6a5acd",
+          color: "#fff",
+          cursor: "pointer",
+        }}
+      >
+        ← Volver
       </button>
 
-      {personaje && (
-        <div className="detalle__wrap">
-          <div className="detalle__media">
-            <img src={personaje.image} alt={personaje.name} />
-          </div>
-
-          <div className="detalle__info">
-            <h1>{personaje.name}</h1>
-            <p><strong>Especie:</strong> {personaje.species}</p>
-            <p><strong>Estado:</strong> {personaje.status}</p>
-            <p><strong>Género:</strong> {personaje.gender}</p>
-            <p><strong>Origen:</strong> {personaje.origin?.name}</p>
-            <p><strong>Ubicación:</strong> {personaje.location?.name}</p>
-
-            {hasEpisodes && (
-              <div className="detalle__episodios">
-                <h2>Episodios</h2>
-                <ul>
-                  {listToShow.map((ep) => (
-                    <li key={ep.id}>
-                      <strong>{ep.episode}</strong> — {ep.name}
-                    </li>
-                  ))}
-                </ul>
-
-                {canToggle && (
-                  <button
-                    className="detalle__episodios-toggle"
-                    onClick={() => setShowAll((v) => !v)}
-                  >
-                    {showAll ? "Ver menos" : "Ver todos"}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "240px 1fr",
+          gap: "1rem",
+          background: "rgba(255,255,255,.9)",
+          borderRadius: 12,
+          padding: "1rem",
+        }}
+      >
+        <div>
+          {poster && (
+            <img src={poster} alt={movie.title} style={{ width: "100%", borderRadius: 8 }} />
+          )}
         </div>
-      )}
+
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: ".5rem" }}>
+            <h1 style={{ marginTop: 0 }}>{movie.title}</h1>
+            {fav && <span className="fav-badge">En favoritos</span>}
+          </div>
+
+          <p style={{ opacity: 0.9 }}>{movie.overview || "Sin descripción disponible."}</p>
+
+          <p style={{ marginTop: ".5rem" }}>
+            <strong>Estreno:</strong> {movie.release_date || "—"} &nbsp;·&nbsp;
+            <strong>Puntaje:</strong> {movie.vote_average?.toFixed?.(1) ?? "—"}
+          </p>
+
+          {/* Botón ❤️ toggle */}
+          <button
+            onClick={() => toggle(movie)}
+            style={{
+              marginTop: ".75rem",
+              padding: ".5rem .9rem",
+              border: "1px solid #ccc",
+              borderRadius: 8,
+              background: "#fff",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+          >
+            {fav ? "❤️ Quitar de favoritos" : "🤍 Agregar a favoritos"}
+          </button>
+
+          {/* Botón de tráiler (solo si existe) */}
+          {computedTrailer?.key && (
+            <button
+              onClick={openTrailer}
+              style={{
+                marginTop: "0.75rem",
+                marginLeft: ".5rem",
+                padding: ".6rem 1rem",
+                border: "none",
+                borderRadius: 6,
+                background: "#e11d48",
+                color: "#fff",
+                cursor: "pointer",
+                fontWeight: 600,
+              }}
+            >
+              ▶ Ver tráiler
+            </button>
+          )}
+        </div>
+      </div>
     </section>
   );
 }

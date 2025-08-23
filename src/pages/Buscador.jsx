@@ -1,161 +1,115 @@
-import { useState } from "react";
-import Card from "./Card.jsx";
+// src/pages/Buscador.jsx
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import MovieCard from "../components/MovieCard";
+import { useSearchMovies } from "../hooks/useSearchMovies";
 import "./Buscador.scss";
 
 export default function Buscador() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [hasSearched, setHasSearched] = useState(false);
+  // URL: ?q=...&page=...
+  const [params, setParams] = useSearchParams();
+  const qParam = params.get("q") || "";
+  const pageParam = Math.max(1, parseInt(params.get("page") || "1", 10));
 
-  // estados para paginado
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  // input controlado
+  const [qInput, setQInput] = useState(qParam);
 
-  const doSearch = async (q, pageToFetch = 1) => {
-    setLoading(true);
-    setError(null);
+  // datos desde TMDB
+  const { data, loading, error } = useSearchMovies(qParam, pageParam);
+  const results = data?.results || [];
+  const totalPages = data?.total_pages || 1;
 
-    try {
-      const res = await fetch(
-        `https://rickandmortyapi.com/api/character/?name=${encodeURIComponent(
-          q
-        )}&page=${pageToFetch}`
-      );
+  // si cambian params externos, sincronizo el input
+  useEffect(() => {
+    setQInput(qParam);
+  }, [qParam]);
 
-      // La API devuelve 404 cuando no hay más páginas o no hay resultados
-      if (!res.ok) {
-        if (res.status === 404) {
-          setResults([]);
-          setTotalPages(0);
-          setPage(1);
-          setError(null); // 0 resultados no es error
-          return;
-        }
-        throw new Error("HTTP error");
-      }
-
-      const data = await res.json();
-      const list = data.results ?? [];
-      const pagesFromApi = data.info?.pages ?? 0;
-
-      setResults(list);
-      setTotalPages(pagesFromApi);
-      setPage(pageToFetch);
-      setError(null);
-    } catch {
-      setError("Ocurrió un problema al buscar. Probá de nuevo.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    if (!query.trim()) return;
-    setHasSearched(true);
-    await doSearch(query.trim(), 1); // siempre arrancamos en página 1
+    const q = qInput.trim();
+    if (!q) return;
+    setParams({ q, page: "1" });
   };
 
-  const onChangeQuery = (e) => {
-    const val = e.target.value;
-    setQuery(val);
-    if (val === "") {
-      // si limpian el input, escondemos mensajes y resultados
-      setHasSearched(false);
-      setResults([]);
-      setError(null);
-      setPage(1);
-      setTotalPages(0);
-    }
+  const goPage = (p) => {
+    const q = (qParam || qInput).trim();
+    if (!q) return;
+    const next = Math.min(Math.max(1, p), totalPages || 1);
+    setParams({ q, page: String(next) });
   };
 
-  const goPrev = () => {
-    if (page > 1) doSearch(query.trim(), page - 1);
-  };
-
-  const goNext = () => {
-    if (page < totalPages) doSearch(query.trim(), page + 1);
-  };
+  const emptyState =
+    !loading && !error && !qParam ? (
+      <p className="home__status">Escribí algo para buscar películas.</p>
+    ) : !loading && !error && qParam && results.length === 0 ? (
+      <p className="home__status">No se encontraron resultados para “{qParam}”.</p>
+    ) : null;
 
   return (
-    <section className="buscador">
-      <h1>Buscador</h1>
+    <main className="buscador">
+      <div className="buscador__wrap">
+        <h1 className="page-title">Buscador</h1>
 
-      <form onSubmit={handleSubmit} role="search" aria-busy={loading}>
-        <label htmlFor="q">¿Qué querés buscar?</label>
-        <input
-          id="q"
-          type="search"
-          placeholder="Ej: Rick, Morty, Summer…"
-          value={query}
-          onChange={onChangeQuery}
-          autoComplete="off"
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Buscando..." : "Buscar"}
-        </button>
-      </form>
+        <form className="searchbar" onSubmit={onSubmit}>
+          <input
+            className="searchbar__input"
+            type="search"
+            placeholder="Buscar películas…"
+            value={qInput}
+            onChange={(e) => setQInput(e.target.value)}
+            aria-label="Buscar películas"
+          />
+          <button className="searchbar__btn" type="submit">
+            Buscar
+          </button>
+        </form>
 
-      {loading && (
-        <div className="skeletons">
-          {[...Array(8)].map((_, i) => (
-            <div className="skel-card" key={i}>
-              <div className="skel-img" />
-              <div className="skel-line" />
-              <div className="skel-line" style={{ width: "70%" }} />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {error && hasSearched && !loading && (
-        <p style={{ opacity: 0.85 }}>{error}</p>
-      )}
-
-      {!loading && !error && hasSearched && results.length === 0 && (
-        <p style={{ opacity: 0.85 }}>
-          No encontramos “{query}”. Probá con otro nombre 🙂
-        </p>
-      )}
-
-      {!loading && !error && results.length > 0 && (
-        <>
-          <div className="results">
-            {results.map((item) => (
-              <Card key={item.id} personaje={item} />
+        {/* Skeletons */}
+        {loading && (
+          <div className="skeletons">
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div key={i} className="skel-card">
+                <div className="skel-img" />
+                <div className="skel-line" />
+                <div className="skel-line" />
+              </div>
             ))}
           </div>
+        )}
 
-          {/* Controles de paginado (solo si hay más de 1 página) */}
-          {totalPages > 1 && (
-            <div className="pager">
-              <button
-                className="pager__btn"
-                onClick={goPrev}
-                disabled={page <= 1 || loading}
-                aria-label="Página anterior"
-              >
+        {/* Errores */}
+        {error && !loading && (
+          <p className="home__status error">
+            Ocurrió un error al buscar. Probá de nuevo.
+          </p>
+        )}
+
+        {/* Resultados */}
+        {!loading && !error && results.length > 0 && (
+          <>
+            <div className="movies-grid">
+              {results.map((m) => (
+                <MovieCard key={m.id} movie={m} />
+              ))}
+            </div>
+
+            <div className="paginator">
+              <button onClick={() => goPage(pageParam - 1)} disabled={pageParam <= 1}>
                 ‹ Anterior
               </button>
-
-              <span className="pager__info">
-                Página <strong>{page}</strong> de <strong>{totalPages}</strong>
+              <span>
+                Página <strong>{pageParam}</strong> de <strong>{totalPages}</strong>
               </span>
-
-              <button
-                className="pager__btn"
-                onClick={goNext}
-                disabled={page >= totalPages || loading}
-                aria-label="Página siguiente"
-              >
+              <button onClick={() => goPage(pageParam + 1)} disabled={pageParam >= totalPages}>
                 Siguiente ›
               </button>
             </div>
-          )}
-        </>
-      )}
-    </section>
+          </>
+        )}
+
+        {/* Vacio / hints */}
+        {emptyState}
+      </div>
+    </main>
   );
 }

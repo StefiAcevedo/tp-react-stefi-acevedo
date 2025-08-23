@@ -3,7 +3,7 @@ import "../components/Card.scss";
 
 export default function Card({ personaje }) {
   const navigate = useNavigate();
-  const go = () => navigate(`/detalle/${personaje.id}`);
+  const go = () => navigate(`/detalle/${personaje?.id}`);
 
   return (
     <article
@@ -11,11 +11,15 @@ export default function Card({ personaje }) {
       onClick={go}
       role="button"
       tabIndex={0}
-      aria-label={`Ver detalle de ${personaje.name}`}
+      aria-label={`Ver detalle de ${personaje?.name ?? "personaje"}`}
       onKeyDown={(e) => e.key === "Enter" && go()}
     >
-      <img src={personaje.image} alt={personaje.name} loading="lazy" />
-      <h3>{personaje.name}</h3>
+      <img
+        src={personaje?.image}
+        alt={personaje?.name ?? "Sin nombre"}
+        loading="lazy"
+      />
+      <h3>{personaje?.name ?? "Sin nombre"}</h3>
     </article>
   );
 }
