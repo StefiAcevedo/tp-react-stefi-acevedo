@@ -6,12 +6,12 @@ export default function Populares() {
   const [page, setPage] = useState(1);
   const { data, loading, error } = useMovies("popular", page);
 
-  const results = data?.results ?? [];
-  const totalPages = data?.total_pages ?? 1;
+  const results = data?.results || [];
+  const totalPages = data?.total_pages || 1;
 
   return (
-    <main className="container" style={{ padding: "1rem 1rem 2rem" }}>
-      <h1>Populares</h1>
+    <section className="section">
+      <h1 className="section-title">Populares</h1>
 
       {loading && <p>Cargando…</p>}
       {error && !loading && <p>Error: {String(error)}</p>}
@@ -49,6 +49,6 @@ export default function Populares() {
       )}
 
       {!loading && !error && results.length === 0 && <p>No hay resultados.</p>}
-    </main>
+    </section>
   );
 }

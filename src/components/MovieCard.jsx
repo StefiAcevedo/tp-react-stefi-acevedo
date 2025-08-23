@@ -6,7 +6,6 @@ import "./MovieCard.scss";
 
 export default function MovieCard({ movie }) {
   const { isFav, toggle } = useFavorites();
-
   const poster = getImageUrl(movie?.poster_path, "w342");
   const fav = isFav(movie?.id);
 
@@ -37,7 +36,10 @@ export default function MovieCard({ movie }) {
         </Link>
       </div>
 
-      <h3 className="movie-card__title">{movie.title}</h3>
+      {/* Título con tooltip */}
+      <h3 className="movie-card__title" title={movie.title}>
+        {movie.title}
+      </h3>
 
       <Link className="movie-card__btn" to={`/detalle/${movie.id}`}>
         Ver detalle
@@ -45,3 +47,4 @@ export default function MovieCard({ movie }) {
     </article>
   );
 }
+

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useFavorites } from "../hooks/useFavorites";
-import "./NavBar.css";
+import "./NavBar.scss"; // ui! unifica estilos
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
