@@ -1,0 +1,92 @@
+/* src/components/MovieCard.scss */
+.movie-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+  padding: 0.75rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  transition: transform .2s, box-shadow .2s;
+
+  &__poster-wrap {
+    position: relative;
+  }
+
+  &__poster {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .fav-fab {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+
+    &:hover {
+      transform: translateY(-1px) scale(1.03);
+      box-shadow: 0 6px 14px rgba(0,0,0,.18);
+    }
+
+    &.is-active {
+      color: #e63946;
+    }
+  }
+
+  &__title {
+    font-size: 0.95rem;
+    margin: 0.5rem 0 0.4rem;
+    color: #333;
+    line-height: 1.25;
+
+    /* arreglo de texto a 2 líneas */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;  /* para Chrome, Safari */
+    line-clamp: 2;          /* estándar futuro */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* asegura altura consistente en todas las cards */
+    min-height: calc(1em * 1.25 * 2);
+  }
+
+  &__btn {
+    margin-top: auto;
+    align-self: center;
+    display: inline-block;
+    padding: 0.5rem 0.8rem;
+    background: #6a5acd;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+    text-decoration: none;
+    margin-bottom: 0.15rem;
+
+    &:hover {
+      background: #5a4bcf;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  }
+}
