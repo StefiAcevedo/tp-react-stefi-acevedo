@@ -2,16 +2,15 @@ import { useFavorites } from "../hooks/useFavorites";
 import MovieCard from "../components/MovieCard";
 
 export default function Favoritos() {
-  const { list } = useFavorites();
+  const fav = useFavorites();
+  const list = fav?.list ?? fav?.items ?? [];
 
   return (
-    <main className="container" style={{ padding: "1rem 1rem 2rem" }}>
-      <h1>Favoritos</h1>
+    <section className="section">
+      <h1 className="section-title">Favoritos</h1>
 
       {list.length === 0 ? (
-        <p style={{ opacity: 0.85 }}>
-          Aún no agregaste películas a favoritos. Agregá desde cualquier card con el ❤️.
-        </p>
+        <p>Aún no agregaste películas a favoritos. Agregá desde cualquier card con el ❤️.</p>
       ) : (
         <div className="movies-grid">
           {list.map((m) => (
@@ -19,6 +18,6 @@ export default function Favoritos() {
           ))}
         </div>
       )}
-    </main>
+    </section>
   );
 }

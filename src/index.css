@@ -99,3 +99,15 @@ nav {
 /* asegura que cada card ocupe toda su celda */
 .movies-grid > * { width: 100%; }
 
+/* ---- Secciones reutilizables (título + contenido) UI! es nuevo mejora post PR ---- */ 
+.section {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  padding: 1rem;
+}
+
+.section-title {
+  margin: 0 0 1rem 0;   /* <— separación clara del grid */
+  color: #5a4bcf;
+  font-weight: 700;
+}
