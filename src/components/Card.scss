@@ -1,33 +1,32 @@
 .card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 0.5rem;
-    text-align: center;
-    background: #fafafa;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
-    /* que la card ocupe la celda con un tope */
+  box-sizing: border-box; /* evita que padding/border rompan el ancho */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.5rem;
+  text-align: center;
+  background: #fafafa;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  /* ocupa toda la celda del grid, pero con un límite */
+  width: 100%;
+  max-width: 220px;
+
+  img {
     width: 100%;
-    max-width: 220px;
-    box-sizing: border-box;
-  
-    img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      display: block;
-    }
-  
-    h3 {
-      font-size: 1rem;
-      margin-top: 0.5rem;
-      color: #333;
-    }
-  
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+    height: auto;
+    border-radius: 8px;
+    display: block;
   }
-  
+
+  h3 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: #333;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}

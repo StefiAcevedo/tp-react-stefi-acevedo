@@ -38,11 +38,12 @@ export default function Buscador() {
     setParams({ q, page: String(next) });
   };
 
-  const emptyState = (!loading && !error && !qParam) ? (
-    <p className="home__status">Escribí algo para buscar películas.</p>
-  ) : (!loading && !error && qParam && results.length === 0) ? (
-    <p className="home__status">No se encontraron resultados para “{qParam}”.</p>
-  ) : null;
+  const emptyState =
+    !loading && !error && !qParam ? (
+      <p className="home__status">Escribí algo para buscar películas.</p>
+    ) : !loading && !error && qParam && results.length === 0 ? (
+      <p className="home__status">No se encontraron resultados para “{qParam}”.</p>
+    ) : null;
 
   return (
     <main className="buscador">
@@ -58,7 +59,9 @@ export default function Buscador() {
             onChange={(e) => setQInput(e.target.value)}
             aria-label="Buscar películas"
           />
-          <button className="searchbar__btn" type="submit">Buscar</button>
+          <button className="searchbar__btn" type="submit">
+            Buscar
+          </button>
         </form>
 
         {/* Skeletons */}
@@ -76,7 +79,9 @@ export default function Buscador() {
 
         {/* Errores */}
         {error && !loading && (
-          <p className="home__status error">Ocurrió un error al buscar. Probá de nuevo.</p>
+          <p className="home__status error">
+            Ocurrió un error al buscar. Probá de nuevo.
+          </p>
         )}
 
         {/* Resultados */}

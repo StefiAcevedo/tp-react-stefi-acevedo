@@ -1,3 +1,4 @@
+/* src/components/NavBar.css */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
 
 nav {
@@ -55,7 +56,6 @@ nav .menu-toggle span {
 
 /* Responsive: para pantallas pequeñas */
 @media (max-width: 768px) {
-  /* Oculto menú en desktop */
   nav ul {
     position: absolute;
     top: 100%;
@@ -69,13 +69,12 @@ nav .menu-toggle span {
     z-index: 10;
   }
 
-  /* Mostrar menú cuando está activo */
   nav ul.active {
-    display: flex;
+    display: flex; /* Mostrar menú cuando está activo */
   }
 
-  /* Mostrar hamburguesa */
   nav .menu-toggle {
-    display: flex;
+    display: flex; /* Mostrar hamburguesa */
   }
 }
+

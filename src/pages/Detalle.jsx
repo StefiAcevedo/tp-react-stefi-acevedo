@@ -1,3 +1,4 @@
+// src/pages/Detalle.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { getImageUrl } from "../services/tmdb";
 import { useMovieDetail } from "../hooks/useMovieDetail";
@@ -8,18 +9,16 @@ export default function Detalle() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Nota: soporta ambos formatos del hook (con `trailer` directo o con `videos`)
+  // Soporta ambas variantes del hook (con `trailer` directo o con `videos`)
   const {
     movie,
-    trailer: hookTrailer,  
-    videos,               
+    trailer: hookTrailer,
+    videos,
     loading,
     error,
   } = useMovieDetail(id);
 
   const { isFav, toggle } = useFavorites();
-
-  // Seguridad: no calculamos fav si aún no hay movie
   const fav = movie ? isFav(movie.id) : false;
 
   if (loading) return <section style={{ padding: 16 }}>Cargando…</section>;
@@ -57,7 +56,7 @@ export default function Detalle() {
   if (!movie) return <section style={{ padding: 16 }}>No se encontró la película.</section>;
 
   const backdrop = getImageUrl(movie.backdrop_path, "w780");
-  const poster   = getImageUrl(movie.poster_path, "w342");
+  const poster = getImageUrl(movie.poster_path, "w342");
 
   // Trailer: usa el que venga del hook o lo busca en `videos.results`
   const computedTrailer =
@@ -163,4 +162,3 @@ export default function Detalle() {
     </section>
   );
 }
-

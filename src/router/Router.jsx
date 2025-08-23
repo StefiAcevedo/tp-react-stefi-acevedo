@@ -22,11 +22,12 @@ export default function AppRouter() {
         <Route path="/detalle/:id" element={<Detalle />} />
 
         {/* Ping de prueba */}
-        <Route path="/__ping" element={<div style={{ padding: 16 }}>PING OK</div>} />
+        <Route path="/__ping" element={<div style={{ padding: "1rem" }}>PING OK</div>} />
 
         {/* Fallback */}
-        <Route path="*" element={<div style={{ padding: 16 }}>404</div>} />
+        <Route path="*" element={<div style={{ padding: "1rem" }}>404</div>} />
       </Routes>
     </BrowserRouter>
   );
 }
+

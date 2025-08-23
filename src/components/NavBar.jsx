@@ -1,7 +1,8 @@
+// src/components/NavBar.jsx
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useFavorites } from "../hooks/useFavorites";
-import "./NavBar.scss";
+import "./NavBar.css";
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
@@ -51,7 +52,6 @@ export default function NavBar() {
         <NavLink to="/buscador" className={linkClass}>
           Buscador
         </NavLink>
-
         <NavLink to="/favoritos" className={linkClass}>
           Favoritos
           {count > 0 && (
