@@ -1,0 +1,80 @@
+/* src/components/NavBar.css */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
+
+nav {
+  background-color: #0f172a; /* Azul oscuro */
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+}
+
+/* Logo */
+nav .logo {
+  color: white;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+/* Menú */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* Links */
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: #f59e0b; /* Naranja */
+}
+
+/* Botón hamburguesa */
+nav .menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+nav .menu-toggle span {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Responsive: para pantallas pequeñas */
+@media (max-width: 768px) {
+  nav ul {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #0f172a;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+    display: none; /* oculto por defecto */
+    z-index: 10;
+  }
+
+  nav ul.active {
+    display: flex; /* Mostrar menú cuando está activo */
+  }
+
+  nav .menu-toggle {
+    display: flex; /* Mostrar hamburguesa */
+  }
+}
+
