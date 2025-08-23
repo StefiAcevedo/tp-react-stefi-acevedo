@@ -107,10 +107,9 @@ export default function Buscador() {
           </>
         )}
 
-        {/* Vacio / hints */}
+        {/* Vacío / hints */}
         {emptyState}
       </div>
     </main>
   );
 }
-
