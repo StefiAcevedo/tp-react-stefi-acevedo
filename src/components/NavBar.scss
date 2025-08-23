@@ -1,136 +1,115 @@
+/* src/components/NavBar.scss */
+
 .nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    width: 100%;
-    background: #6a5acd;
-    color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: #0f172a;
+  color: #fff;
+}
+
+/* fila superior: brand + hamburguesa */
+.nav__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0.75rem 1rem;
+}
+
+/* brand */
+.nav__brand {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: .2px;
+
+  &:hover { text-decoration: underline; }
+}
+
+/* botón hamburguesa (mobile) */
+.nav__toggle {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+
+  .nav__toggle-line {
+    width: 22px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform .25s ease, opacity .25s ease, width .25s ease;
   }
-  
-  /* fila superior: brand + hamburguesa */
-  .nav__bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 0.75rem 1rem;
+
+  &.is-open {
+    .nav__toggle-line:nth-child(1) { transform: translateY(7px) rotate(45deg); width: 22px; }
+    .nav__toggle-line:nth-child(2) { opacity: 0; }
+    .nav__toggle-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); width: 22px; }
   }
-  
-  /* brand */
-  .nav__brand {
-    color: #fff;
-    font-weight: 500; /* más liviano */
-    text-decoration: none;
-    letter-spacing: .2px;
-  
-    &:hover { text-decoration: underline; }
-  }
-  
-  /* botón hamburguesa (mobile) */
-  .nav__toggle {
-    display: inline-flex;
-    flex-direction: column;
-    gap: 5px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-  
-    .nav__toggle-line {
-      width: 22px;
-      height: 2px;
-      background: #fff;
-      border-radius: 2px;
-      transition: transform .25s ease, opacity .25s ease, width .25s ease;
-    }
-  
-    &.is-open {
-      .nav__toggle-line:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-        width: 22px;
-      }
-      .nav__toggle-line:nth-child(2) {
-        opacity: 0;
-      }
-      .nav__toggle-line:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-        width: 22px;
-      }
-    }
-  }
-  
-  /* contenedor de links */
-  .nav__links {
-    display: none;               /* oculto en mobile por defecto */
-    flex-direction: column;
-    gap: 0.6rem;
-    padding: 0 1rem 0.9rem;      /* espacio inferior cuando se abre */
-  }
-  
-  .nav__link {
-    color: #fff;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 0.35rem 0.65rem;
-    border-radius: 4px;
-    transition: background .2s;
-  
-    &:hover,
-    &.active {
-      background: rgba(255,255,255,.18);
-    }
-  }
-  
-  /* cuando abre el menú en mobile */
-  .nav__links.is-open {
-    display: flex;
-  }
-  
-  /* ---------- Desktop ---------- */
-  @media (min-width: 768px) {
-    /* nav entero en una sola fila: brand a la izquierda, links a la derecha */
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-  
-    .nav__toggle { display: none; }    /* oculto en desktop */
-  
-    .nav__links {
-      display: flex !important;        /* siempre visible en desk */
-      flex-direction: row;
-      align-items: center;
-      gap: 1rem;
-      padding: 0 1rem;                 /* sin padding inferior que rompa la fila */
-    }
-  }
-  
-  /* Badge contador en el link de Favoritos */
+}
+
+/* contenedor de links (mobile cerrado por defecto) */
+.nav__links {
+  display: none;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0 1rem 0.9rem;
+}
+
+/* links: sin “salto” en hover/active */
 .nav__link {
-    position: relative;
-  
-    .nav__badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 1.4rem;
-      height: 1.4rem;
-      padding: 0 .35rem;
-      margin-left: .5rem;
-      border-radius: 999px;
-      font-size: .8rem;
-      font-weight: 700;
-      background: #fff;
-      color: #6a5acd;
-      line-height: 1;
-    }
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 6px 2px;              /* algo de padding vertical */
+  border-bottom: 2px solid transparent; /* evita que cambie la altura */
+  transition: border-color .2s, color .2s;
+}
+
+.nav__link:hover,
+.nav__link.active {
+  border-bottom-color: #ff9800;  /* subrayado que no mueve nada */
+  color: #ffecd1;
+}
+
+/* badge con separación ~16px */
+.nav__badge {
+  display: inline-grid;
+  place-items: center;
+  margin-left: 1rem;  /* ~16px */
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 .25rem;
+  border-radius: 999px;
+  background: #ff9800;
+  color: #0f172a;
+  font-size: .8rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* cuando abre el menú en mobile */
+.nav__links.is-open { display: flex; }
+
+/* ---------- Desktop ---------- */
+@media (min-width: 768px) {
+  .nav { display: flex; align-items: center; justify-content: space-between; }
+  .nav__toggle { display: none; }  /* oculta hamburguesa */
+  .nav__links {
+    display: flex !important; /* siempe visible en desktop */
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem; /* ≈32px entre botones */
+    padding: 0 1rem;  /* sin padding inferior */
   }
-  
-  /* cuando el menú está en columna (mobile) que el badge no “salte” */
-  @media (max-width: 768px) {
-    .nav__link .nav__badge {
-      margin-left: .4rem;
-    }
-  }
-  
+}
+
+/* badge en mobile */
+@media (max-width: 767px) {
+  .nav__badge { margin-left: .6rem; }
+}
