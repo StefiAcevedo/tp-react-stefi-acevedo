@@ -1,32 +1,55 @@
+/* src/components/Card.scss */
 .card {
-  box-sizing: border-box; /* evita que padding/border rompan el ancho */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 0.5rem;
-  text-align: center;
-  background: #fafafa;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  transition: transform .2s ease, box-shadow .2s ease;
 
-  /* ocupa toda la celda del grid, pero con un límite */
-  width: 100%;
-  max-width: 220px;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  }
 
-  img {
+  &__link {
+    display: grid;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  &__media {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+
+  &__img {
     width: 100%;
-    height: auto;
-    border-radius: 8px;
+    height: 100%;
+    object-fit: cover;
     display: block;
   }
 
-  h3 {
-    font-size: 1rem;
-    margin-top: 0.5rem;
-    color: #333;
+  &__body {
+    padding: .75rem .9rem 1rem;
+    display: grid;
+    gap: .35rem;
   }
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  &__title {
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  &__meta {
+    font-size: .9rem;
+    opacity: .75;
+  }
+
+  &__cta {
+    margin-top: .35rem;
+    font-size: .9rem;
+    font-weight: 600;
   }
 }
